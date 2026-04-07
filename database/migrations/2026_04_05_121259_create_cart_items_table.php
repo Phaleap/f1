@@ -10,12 +10,19 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('cart_items', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('cart_items', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('cart_id');
+        $table->unsignedBigInteger('product_id');  // ← plain column, no constraint
+        $table->integer('quantity')->default(1);
+        $table->decimal('price', 10, 2);
+        $table->timestamps();
+
+        $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
+        // product foreign key removed until products table exists
+    });
+}
 
     /**
      * Reverse the migrations.
