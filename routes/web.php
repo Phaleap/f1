@@ -1,5 +1,5 @@
 <?php
-
+use App\Models\Product;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;  // ← move here
 use Illuminate\Support\Facades\Route;
@@ -18,9 +18,13 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    $products = Product::with('mainImage')
+        ->where('status', 'active')
+        ->latest()
+        ->take(4)
+        ->get();
+    return view('home', compact('products'));
 });
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
