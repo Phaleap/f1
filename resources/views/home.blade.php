@@ -398,6 +398,221 @@ body::after {
     letter-spacing: 6px;
     color: rgba(255,255,255,0.3);
 }
+/* HERO BASE */
+#hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* VIDEO */
+#hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    filter: brightness(0.6) contrast(1.1);
+}
+
+/* OVERLAY */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center,
+        rgba(0,0,0,0.2) 0%,
+        rgba(0,0,0,0.7) 70%,
+        rgba(0,0,0,0.95) 100%);
+    z-index: -1;
+}
+
+/* CONTENT */
+.hero-content {
+    text-align: center;
+    z-index: 2;
+    animation: fadeUp 1s ease forwards;
+}
+
+/* TEXT */
+.hero-label {
+    font-size: 0.7rem;
+    letter-spacing: 6px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(3rem, 8vw, 7rem);
+    letter-spacing: 8px;
+    line-height: 1;
+}
+
+.hero-title span {
+    color: var(--red);
+}
+
+.hero-subtitle {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+}
+
+/* BUTTONS */
+.hero-cta {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-primary {
+    padding: 12px 28px;
+    background: var(--red);
+    color: white;
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: #ff1a1a;
+}
+
+.btn-secondary {
+    padding: 12px 28px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.btn-secondary:hover {
+    border-color: var(--red);
+    color: var(--red);
+}
+
+/* SCROLL */
+.scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    color: rgba(255,255,255,0.3);
+}
+
+.scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--red), transparent);
+    margin: 0 auto 8px;
+    animation: pulse 2s infinite;
+}
+/* ── MUSIC CARD ── */
+#music-card {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(225, 6, 0, 0.2);
+    padding: 12px 16px;
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(225,6,0,0.08);
+    animation: fadeUp 1s ease 1.5s both;
+    transition: border-color 0.3s;
+}
+#music-card:hover {
+    border-color: rgba(225,6,0,0.5);
+}
+#music-card-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+#hans-img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(225,6,0,0.4);
+    filter: grayscale(30%);
+}
+#music-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+#music-label {
+    font-size: 0.55rem;
+    letter-spacing: 4px;
+    color: var(--red);
+    text-transform: uppercase;
+}
+#music-name {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    color: var(--off-white);
+    line-height: 1;
+}
+#music-track {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: rgba(240,237,232,0.35);
+    text-transform: uppercase;
+}
+
+/* Mute button */
+#mute-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(240,237,232,0.5);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+#mute-btn:hover {
+    border-color: var(--red);
+    color: var(--red);
+}
+#mute-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Vinyl spin on image when playing */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+#hans-img.playing {
+    animation: spin 8s linear infinite;
+}
     </style>
 </head>
 <body>
@@ -419,23 +634,42 @@ body::after {
     <div id="glass-overlay"></div>
     {{-- HERO --}}
     <section id="hero">
+
+    <!-- VIDEO BACKGROUND -->
+    <video autoplay muted loop playsinline id="hero-video" poster="/images/fallback.jpg">
+        <source src="{{ asset('F1.mp4') }}" type="video/mp4">
+    </video>
+
+    <!-- DARK OVERLAY -->
+    <div class="hero-overlay"></div>
+
+    <!-- CONTENT -->
+    <div class="hero-content">
+
         <p class="hero-label">Formula One — 2024 Collection</p>
 
-        {{-- THE PILL FRAME --}}
-        <div id="car-frame">
-            <canvas id="car-canvas"></canvas>
+        <h1 class="hero-title">
+            Own The <span>Race</span>
+        </h1>
+
+        <p class="hero-subtitle">
+            Precision. Power. Performance.
+        </p>
+
+        <div class="hero-cta">
+            <a href="#products-preview" class="btn-primary">Shop Now</a>
+            <a href="#" class="btn-secondary">Explore Cars</a>
         </div>
 
-        <div class="hero-title-block">
-            <h1>Own The <span>Race</span></h1>
-            <p>Official F1 Cars & Merchandise</p>
-        </div>
+    </div>
 
-        <div class="scroll-hint">
-            <div class="scroll-hint-line"></div>
-            <span>Scroll</span>
-        </div>
-    </section>
+    <!-- SCROLL INDICATOR -->
+    <div class="scroll-hint">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+    </div>
+
+</section>
 
 
     {{-- SCROLL REVEAL --}}
@@ -524,11 +758,51 @@ body::after {
     </script>
 
     <script>
-        // Navbar
-        window.addEventListener('scroll', () => {
-            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-        });
-    </script>
+    // Navbar
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ── MUSIC ── (must be here, NOT inside type="module")
+    let musicStarted = false;
+
+    function startMusic() {
+        const music   = document.getElementById('bg-music');
+        const hansImg = document.getElementById('hans-img');
+        if (!musicStarted) {
+            music.volume = 0.35;
+            music.play().catch(() => {});
+            musicStarted = true;
+            hansImg.classList.add('playing');
+        }
+    }
+
+    function toggleMute() {
+        const music   = document.getElementById('bg-music');
+        const muteBtn = document.getElementById('mute-btn');
+        const iconOn  = document.getElementById('icon-unmute');
+        const iconOff = document.getElementById('icon-mute');
+        const hansImg = document.getElementById('hans-img');
+
+        startMusic();
+        music.muted = !music.muted;
+
+        if (music.muted) {
+            iconOn.style.display  = 'none';
+            iconOff.style.display = 'block';
+            hansImg.classList.remove('playing');
+            muteBtn.style.borderColor = 'rgba(225,6,0,0.5)';
+        } else {
+            iconOn.style.display  = 'block';
+            iconOff.style.display = 'none';
+            hansImg.classList.add('playing');
+            muteBtn.style.borderColor = '';
+        }
+    }
+
+    document.addEventListener('click', startMusic, { once: true });
+    document.addEventListener('scroll', startMusic, { once: true });
+</script>
 
     <script type="module">
         import * as THREE from 'three';
@@ -793,6 +1067,15 @@ gsap.to("#rpm-fill", {
                 start:   'top 80%',
             }
         });
+        gsap.to("#hero", {
+    opacity: 0,
+    scrollTrigger: {
+        trigger: "#scroll-spacer",
+        start: "top 80%",
+        end: "top 40%",
+        scrub: true
+    }
+});
         gsap.to(fsCamera, {
     fov: 28,
     scrollTrigger: {
@@ -827,6 +1110,44 @@ gsap.to("#rpm-fill", {
             fsCamera.updateProjectionMatrix();
             fsRenderer.setSize(window.innerWidth, window.innerHeight);
         });
+
+        
+    // Navbar
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+
     </script>
+
+    <!-- MUSIC -->
+<audio id="bg-music" loop autoplay>
+    <source src="{{ asset('music/hans-zimmer.mp3') }}" type="audio/mp3">
+</audio>
+
+<!-- HANS ZIMMER CARD -->
+<div id="music-card">
+    <div id="music-card-inner">
+        <img id="hans-img" src="{{ asset('image/hans-zimmer.png') }}" alt="Hans Zimmer">
+        <div id="music-info">
+            <span id="music-label">NOW PLAYING</span>
+            <span id="music-name">Hans Zimmer</span>
+            <span id="music-track">Two Steps From Hell</span>
+        </div>
+    </div>
+    <button id="mute-btn" onclick="toggleMute()">
+        <svg id="icon-unmute" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        </svg>
+        <svg id="icon-mute" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+    </button>
+</div>
+
 </body>
 </html>
