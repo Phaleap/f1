@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Store — Own The Race</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
+
         :root {
             --red:       #e10600;
             --red-glow:  #ff1a0d;
@@ -1067,39 +1060,3 @@
             .ticker-item { padding: 0 20px; }
             #music-card { bottom: 16px; right: 16px; padding: 10px 12px; }
         }
-    </style>
-</head>
-<body>
-
-    @include('home._ticker')
-
-    @include('home._navbar')
-
-    @include('home._hero')
-
-    @include('home._marquee', ['direction' => 'normal', 'duration' => '20s'])
-
-    @include('home._sticky-car')
-
-    @include('home._marquee', ['direction' => 'reverse', 'duration' => '25s'])
-
-    @include('home._products-preview')
-
-    @include('home._footer')
-
-    {{-- Audio (lives at the bottom, used by music card) --}}
-    <audio id="bg-music" loop>
-        <source src="{{ asset('music/hans-zimmer.mp3') }}" type="audio/mp3">
-    </audio>
-
-    @include('home._music-card')
-
-    {{-- Scripts --}}
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-
-    @include('home._scripts-nav')
-    @include('home._scripts-three')
-
-</body>
-</html>
