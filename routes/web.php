@@ -18,16 +18,37 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 
 Route::get('/', function () {
+
     $products = Product::with('mainImage')
         ->where('status', 'active')
+        ->where('product_type', 'merchandise')
         ->latest()
         ->take(4)
         ->get();
-    return view('home', compact('products'));
+
+    $featuredCars = Product::with([
+            'mainImage',
+            'carModel.team',
+            'carModel.driver',
+        ])
+        ->where('status', 'active')
+        ->where('product_type', 'car')
+        ->latest()
+        ->take(4)
+        ->get();
+
+    return view('home', compact('products', 'featuredCars'));
 });
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Move these OUT of the auth middleware group
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/cars', [ProductController::class, 'cars'])->name('products.cars');
+Route::get('/merchandise', [ProductController::class, 'merchandise'])->name('products.merchandise');
 
 
 Route::middleware('auth')->group(function () {
@@ -47,10 +68,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     // Products
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-    Route::get('/cars', [ProductController::class, 'cars'])->name('products.cars');
-    Route::get('/merchandise', [ProductController::class, 'merchandise'])->name('products.merchandise');
      Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
     Route::delete('/wishlist/{item}', [WishlistController::class, 'remove'])->name('wishlist.remove');

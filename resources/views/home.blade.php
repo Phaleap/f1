@@ -1070,36 +1070,28 @@
     </style>
 </head>
 <body>
-
     @include('home._ticker')
-
     @include('home._navbar')
-
     @include('home._hero')
-
     @include('home._marquee', ['direction' => 'normal', 'duration' => '20s'])
-
     @include('home._sticky-car')
-
     @include('home._marquee', ['direction' => 'reverse', 'duration' => '25s'])
-
+    @include('home._featured-cars')
     @include('home._products-preview')
+@include('home._reviews')        {{-- ← add here --}}
+@include('home._stats')       {{-- ← add --}}
+@include('home._awards')      {{-- ← add --}}
+@include('home._footer')
 
-    @include('home._footer')
-
-    {{-- Audio (lives at the bottom, used by music card) --}}
     <audio id="bg-music" loop>
         <source src="{{ asset('music/hans-zimmer.mp3') }}" type="audio/mp3">
     </audio>
-
     @include('home._music-card')
 
-    {{-- Scripts --}}
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-
     @include('home._scripts-nav')
     @include('home._scripts-three')
-
 </body>
+
 </html>

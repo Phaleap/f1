@@ -105,6 +105,3 @@
 
         </div>
     </div>
-
-{{-- MARQUEE 2 --}}
-@include('home._marquee', ['direction' => 'reverse', 'duration' => '25s'])
