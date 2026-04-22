@@ -83,6 +83,9 @@ Route::middleware('auth')->group(function () {
     // Shipment tracking
     Route::get('/track/{order}', [ShipmentController::class, 'track'])->name('shipment.track');    
 });
+Route::get('/about', function () {
+    return view('about_us.index');
+})->name('about');
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     // Products
     Route::resource('products', AdminProductController::class);
@@ -100,6 +103,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('users/{user}', [AdminUserController::class, 'show'])->name('users.show');
     Route::post('users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+
+    
 });
 
 

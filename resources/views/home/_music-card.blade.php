@@ -1,6 +1,6 @@
 <div id="music-card">
     <div id="music-card-inner">
-        <img id="hans-img" src="{{ asset('image/hans-zimmer.png') }}" alt="Hans Zimmer">
+        <img id="hans-img" src="{{ asset('assets/hans-zimmer.jpg') }}" alt="Hans Zimmer">
         <div id="music-info">
             <span id="music-label">Now Playing</span>
             <span id="music-name">Hans Zimmer</span>

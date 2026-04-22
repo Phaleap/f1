@@ -8,6 +8,7 @@
     <ul class="nav-links">
         <li><a href="{{ route('products.cars') }}">Cars</a></li>
         <li><a href="{{ route('products.merchandise') }}">Merchandise</a></li>
+        <li><a href="{{ route('about') }}">About Us</a></li>
         <li class="nav-divider"></li>
         <li>
             <a href="{{ route('cart.index') }}" class="nav-icon-link" title="Cart">
@@ -65,28 +66,31 @@
 
     {{-- Links --}}
     <div class="nav-mobile-links">
+        <a href="{{ route('about') }}" onclick="toggleMobileNav()">
+            <span class="nm-num">01</span>About Us
+        </a>
         <a href="{{ route('products.cars') }}" onclick="toggleMobileNav()">
-            <span class="nm-num">01</span>Cars
+            <span class="nm-num">02</span>Cars
         </a>
         <a href="{{ route('products.merchandise') }}" onclick="toggleMobileNav()">
-            <span class="nm-num">02</span>Merchandise
+            <span class="nm-num">03</span>Merchandise
         </a>
         <a href="{{ route('cart.index') }}" onclick="toggleMobileNav()">
-            <span class="nm-num">03</span>Cart
+            <span class="nm-num">04</span>Cart
         </a>
         @auth
             <a href="{{ route('orders.index') }}" onclick="toggleMobileNav()">
-                <span class="nm-num">04</span>Orders
+                <span class="nm-num">05</span>Orders
             </a>
             <a href="{{ route('profile.edit') }}" onclick="toggleMobileNav()">
-                <span class="nm-num">05</span>Account
+                <span class="nm-num">06</span>Account
             </a>
         @else
             <a href="{{ route('login') }}" onclick="toggleMobileNav()">
-                <span class="nm-num">04</span>Login
+                <span class="nm-num">07</span>Login
             </a>
             <a href="{{ route('register') }}" onclick="toggleMobileNav()">
-                <span class="nm-num">05</span>Register
+                <span class="nm-num">08</span>Register
             </a>
         @endauth
     </div>
@@ -95,6 +99,7 @@
     <div class="nav-mobile-foot">Precision · Power · Performance</div>
 
 </div>
+
 
 <style>
 /* ─────────────────────────────────────────

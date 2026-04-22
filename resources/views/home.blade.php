@@ -1082,7 +1082,7 @@
     @include('home._footer')
 
     <audio id="bg-music" loop>
-        <source src="{{ asset('music/hans-zimmer.mp3') }}" type="audio/mp3">
+        <source src="{{ asset('assets/F1.mp3') }}" type="audio/mp3">
     </audio>
     @include('home._music-card')
 

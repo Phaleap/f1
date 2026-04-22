@@ -16,7 +16,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+            @include('home._navbar')
 
             <!-- Page Heading -->
             @isset($header)
@@ -29,8 +29,8 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
-            </main>
+    @yield('content')
+</main>
         </div>
          {{-- ── SCRIPTS ── --}}
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
