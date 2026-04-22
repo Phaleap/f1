@@ -1074,14 +1074,16 @@
     @include('home._navbar')
     @include('home._hero')
     @include('home._marquee', ['direction' => 'normal', 'duration' => '20s'])
+    @include('home._about-store')
+    @include('home._marquee', ['direction' => 'normal', 'duration' => '20s'])
     @include('home._sticky-car')
     @include('home._marquee', ['direction' => 'reverse', 'duration' => '25s'])
     @include('home._featured-cars')
     @include('home._products-preview')
-@include('home._reviews')        {{-- ← add here --}}
-@include('home._stats')       {{-- ← add --}}
-@include('home._awards')      {{-- ← add --}}
-@include('home._footer')
+    @include('home._reviews')        {{-- ← add here --}}
+    @include('home._stats')       {{-- ← add --}}
+    @include('home._awards')      {{-- ← add --}}
+    @include('home._footer')
 
     <audio id="bg-music" loop>
         <source src="{{ asset('music/hans-zimmer.mp3') }}" type="audio/mp3">
