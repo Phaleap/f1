@@ -1,3 +1,9 @@
+
+@extends('layouts.app')
+
+@section('content')
+    {{-- all your existing home content --}}
+@endsection
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +22,7 @@
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; font-size: 16px; }
 
         body {
             background: var(--dark);
@@ -70,100 +76,7 @@
         body { padding-top: 32px; }
         nav  { top: 32px; }
 
-        /* ─────────────────────────────────────────
-           NAVBAR
-        ───────────────────────────────────────── */
-        nav {
-    position: fixed;
-    left: 0; right: 0;
-    z-index: 1000;
-    padding: 22px 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.4s, padding 0.4s;
-}
-        nav.scrolled {
-    background: rgba(5,5,5,0.95);
-    backdrop-filter: blur(20px);
-    padding: 16px 60px;
-    border-bottom: 1px solid rgba(225,6,0,0.2);
-}
-        .nav-logo {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 1.9rem;                     /* was 1.6rem */
-            letter-spacing: 6px;
-            color: var(--off-white);
-        }
-        .nav-logo span { color: var(--red); }
 
-        .nav-links {
-            display: flex;
-            gap: 36px;
-            list-style: none;
-        }
-        .nav-links a {
-            color: rgba(240,237,232,0.7);          /* was 0.45 → much more readable */
-            text-decoration: none;
-            font-size: 0.8rem;                     /* was 0.72rem */
-            font-weight: 600;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            transition: color 0.3s;
-            position: relative;
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px; left: 0;
-            width: 0; height: 1px;
-            background: var(--red);
-            transition: width 0.3s;
-        }
-        .nav-links a:hover { color: var(--off-white); }
-        .nav-links a:hover::after { width: 100%; }
-
-        /* Hamburger (mobile) */
-        .nav-hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 4px;
-        }
-        .nav-hamburger span {
-            display: block;
-            width: 24px; height: 2px;              /* was 22px/1.5px */
-            background: var(--off-white);
-            transition: all 0.3s;
-        }
-        .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-        .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-        .nav-mobile {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(5,5,5,0.97);
-            backdrop-filter: blur(24px);
-            z-index: 999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 40px;
-        }
-        .nav-mobile.open { display: flex; }
-        .nav-mobile a {
-            font-family: 'Bebas Neue', cursive;
-            font-size: clamp(2.8rem, 8vw, 4.5rem); /* was clamp(2.5rem…4rem) */
-            letter-spacing: 8px;
-            color: rgba(240,237,232,0.65);          /* was 0.4 */
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .nav-mobile a:hover { color: var(--off-white); }
-        .nav-mobile a span { color: var(--red); }
 
         /* ─────────────────────────────────────────
            HERO
@@ -895,79 +808,7 @@
             margin-right: 2px;
         }
 
-        /* ─────────────────────────────────────────
-           FOOTER
-        ───────────────────────────────────────── */
-        footer {
-            padding: 60px 70px;                    /* was 50px 60px */
-            border-top: 1px solid rgba(225,6,0,0.15); /* was 0.08 */
-            position: relative;
-        }
-        .footer-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-        .footer-logo {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 2.2rem;                     /* was 1.8rem */
-            letter-spacing: 6px;
-            color: rgba(240,237,232,0.35);          /* was 0.18 */
-            display: block;
-            margin-bottom: 12px;
-        }
-        .footer-logo span { color: rgba(225,6,0,0.7); } /* was 0.5 */
-        .footer-tagline {
-            font-size: 0.68rem;                    /* was 0.6rem */
-            letter-spacing: 5px;
-            color: rgba(240,237,232,0.2);           /* was 0.08 */
-            text-transform: uppercase;
-        }
-        .footer-links-group { display: flex; gap: 60px; }
-        .footer-col-title {
-            font-size: 0.65rem;                    /* was 0.55rem */
-            letter-spacing: 6px;
-            color: var(--red);
-            text-transform: uppercase;
-            margin-bottom: 18px;
-        }
-        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-        .footer-col ul a {
-            font-size: 0.82rem;                    /* was 0.72rem */
-            letter-spacing: 2px;
-            color: rgba(240,237,232,0.4);           /* was 0.2 */
-            text-decoration: none;
-            text-transform: uppercase;
-            transition: color 0.3s;
-        }
-        .footer-col ul a:hover { color: rgba(240,237,232,0.9); } /* was 0.7 */
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.06); /* was 0.03 */
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .footer-copy {
-            font-size: 0.65rem;                    /* was 0.58rem */
-            letter-spacing: 3px;
-            color: rgba(240,237,232,0.2);           /* was 0.08 */
-            text-transform: uppercase;
-        }
-        .footer-badges { display: flex; gap: 16px; align-items: center; }
-        .footer-badge {
-            font-size: 0.58rem;                    /* was 0.5rem */
-            letter-spacing: 3px;
-            color: rgba(240,237,232,0.15);          /* was 0.06 */
-            text-transform: uppercase;
-            border: 1px solid rgba(255,255,255,0.08); /* was 0.04 */
-            padding: 5px 10px;
-        }
+
 
         /* ─────────────────────────────────────────
            MUSIC CARD

@@ -1,6 +1,3 @@
-
-
-
 @extends('layouts.app')
 
 @section('content')
@@ -301,7 +298,7 @@
 .about-hero__eyebrow {
     display: flex;
     align-items: center;
-    font-size: 0.52rem;
+    font-size: 1rem;
     letter-spacing: 5px;
     text-transform: uppercase;
     color: var(--red);
@@ -343,7 +340,7 @@
     margin-bottom: 56px;
 }
 .about-hero__body p {
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1.8;
     color: rgba(255,255,255,0.5);
     margin-bottom: 12px;
@@ -372,7 +369,7 @@
     line-height: 1;
 }
 .stat-label {
-    font-size: 0.45rem;
+    font-size: 1rem;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: var(--muted);
@@ -407,7 +404,7 @@
     50% { opacity: 1; transform: scaleY(1); }
 }
 .about-hero__scroll-hint span {
-    font-size: 0.4rem;
+    font-size: 1rem;
     letter-spacing: 5px;
     text-transform: uppercase;
     color: var(--muted);
@@ -447,7 +444,7 @@
     position: absolute;
     top: 48px;
     left: 60px;
-    font-size: 0.48rem;
+    font-size: 1rem;
     letter-spacing: 5px;
     text-transform: uppercase;
     color: var(--red);
@@ -531,7 +528,7 @@
 }
 
 .driver-info__team {
-    font-size: 0.5rem;
+    font-size: 1rem;
     letter-spacing: 5px;
     text-transform: uppercase;
     margin-bottom: 16px;
@@ -568,7 +565,7 @@
 }
 
 .driver-info__quote {
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.75;
     color: rgba(255,255,255,0.45);
     font-style: italic;
@@ -592,7 +589,7 @@
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 .fact-label {
-    font-size: 0.45rem;
+    font-size: 1rem;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--muted);
@@ -619,7 +616,7 @@
 .team-header .section-eyebrow {
     display: flex;
     align-items: center;
-    font-size: 0.5rem;
+    font-size: 1rem;
     letter-spacing: 5px;
     text-transform: uppercase;
     color: var(--red);
@@ -707,7 +704,7 @@
 }
 .member-role {
     display: block;
-    font-size: 0.42rem;
+    font-size: 1rem;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: var(--red);
@@ -765,14 +762,14 @@
 
 .desc-tag {
     display: block;
-    font-size: 0.42rem;
+    font-size: 1rem;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: var(--red);
     margin-bottom: 10px;
 }
 .member-desc p {
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.75;
     color: rgba(255,255,255,0.45);
     margin: 0;
