@@ -228,6 +228,46 @@
     </div>
 
 </section>
+{{-- ─────────────────────────────────────
+   SECTION 5: SCROLL TEXT REVEAL
+───────────────────────────────────── --}}
+<section class="manifesto-section" id="manifestoSection">
+    <div class="manifesto-sticky">
+        <p class="manifesto-text" id="manifestoText">
+            <span class="m-word" data-accent="false">SPEED</span>
+            <span class="m-word" data-accent="false">IS</span>
+            <span class="m-word" data-accent="false">NOT</span>
+            <span class="m-word" data-accent="false">JUST</span>
+            <span class="m-word" data-accent="false">A</span>
+            <span class="m-word" data-accent="false">NUMBER.</span>
+            <span class="m-word" data-accent="false">IT'S</span>
+            <span class="m-word" data-accent="false">THE</span>
+            <span class="m-word" data-accent="false">SOUND</span>
+            <span class="m-word" data-accent="false">THAT</span>
+            <span class="m-word" data-accent="false">REWIRES</span>
+            <span class="m-word" data-accent="false">YOUR</span>
+            <span class="m-word" data-accent="false">BRAIN,</span>
+            <span class="m-word" data-accent="false">THE</span>
+            <span class="m-word" data-accent="false">CORNER</span>
+            <span class="m-word" data-accent="false">THAT</span>
+            <span class="m-word" data-accent="false">STOPS</span>
+            <span class="m-word" data-accent="false">YOUR</span>
+            <span class="m-word" data-accent="false">HEART,</span>
+            <span class="m-word" data-accent="false">THE</span>
+            <span class="m-word" data-accent="false">MOMENT</span>
+            <span class="m-word" data-accent="false">THAT</span>
+            <span class="m-word" data-accent="false">MAKES</span>
+            <span class="m-word" data-accent="false">YOU</span>
+            <span class="m-word" data-accent="false">FORGET</span>
+            <span class="m-word" data-accent="false">EVERYTHING</span>
+            <span class="m-word" data-accent="false">ELSE.</span>
+            <span class="m-word" data-accent="true">THIS</span>
+            <span class="m-word" data-accent="true">IS</span>
+            <span class="m-word" data-accent="true">FORMULA</span>
+            <span class="m-word" data-accent="true">ONE.</span>
+        </p>
+    </div>
+</section>
 @include('home._footer')
 @endsection
 
@@ -775,7 +815,49 @@
     margin: 0;
     max-width: 420px;
 }
+/* ═══════════════════════════════════════
+   SECTION 5 — MANIFESTO TEXT REVEAL
+═══════════════════════════════════════ */
+.manifesto-section {
+    position: relative;
+    height: 300vh;
+    background: var(--dark);
+}
 
+.manifesto-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 80px;
+}
+
+.manifesto-text {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    letter-spacing: 4px;
+    line-height: 1.3;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0;
+}
+
+.m-word {
+    display: inline-block;
+    margin-right: 0.3em;
+    color: rgba(255,255,255,0.1);
+    transition: color 0.3s ease;
+}
+
+.m-word.lit {
+    color: var(--off-white);
+}
+
+.m-word[data-accent="true"].lit {
+    color: var(--red);
+}
 /* ── Responsive ── */
 @media (max-width: 900px) {
     .about-hero__content { padding: 80px 32px; }
@@ -962,5 +1044,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial calls
     onDriverScroll();
+
+       /* ─────────────────────────────────
+       MANIFESTO: Word-by-word reveal
+    ───────────────────────────────── */
+    const manifestoSection = document.getElementById('manifestoSection');
+    const words = document.querySelectorAll('.m-word');
+
+    function onManifestoScroll() {
+        if (!manifestoSection) return;
+        const rect = manifestoSection.getBoundingClientRect();
+        const sectionH = manifestoSection.offsetHeight;
+        const viewH = window.innerHeight;
+        const scrolled = -rect.top;
+        const scrollable = sectionH - viewH;
+        const progress = Math.max(0, Math.min(1, scrolled / scrollable));
+
+        const litCount = Math.floor(progress * words.length);
+        words.forEach((word, i) => {
+            if (i < litCount) {
+                word.classList.add('lit');
+            } else {
+                word.classList.remove('lit');
+            }
+        });
+    }
+
+    /* ── Single combined scroll listener ── */
+    window.addEventListener('scroll', () => {
+        onDriverScroll();
+        onManifestoScroll();
+    }, { passive: true });
+
+    // Initial calls
+    onDriverScroll();
+    onManifestoScroll();
 });
+
 </script>

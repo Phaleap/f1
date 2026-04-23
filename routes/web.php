@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\InventoryController as AdminInventoryController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\ContactController;
 
 
 Route::get('/', function () {
@@ -86,6 +87,8 @@ Route::middleware('auth')->group(function () {
 Route::get('/about', function () {
     return view('about_us.index');
 })->name('about');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     // Products
     Route::resource('products', AdminProductController::class);
