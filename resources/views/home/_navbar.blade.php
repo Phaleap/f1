@@ -115,7 +115,12 @@ nav#navbar {
     align-items: center;
     justify-content: space-between;
     transition: background 0.4s, border-color 0.4s, height 0.4s;
-    border-bottom: 1px solid transparent;
+    border-bottom: 1px solid rgba(225,6,0,0.1);
+    
+    /* Add these */
+    background: rgba(5,5,5,0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
 }
 nav#navbar.scrolled {
     background: rgba(5,5,5,0.96);

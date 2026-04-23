@@ -74,21 +74,21 @@
            NAVBAR
         ───────────────────────────────────────── */
         nav {
-            position: fixed;
-            left: 0; right: 0;
-            z-index: 1000;
-            padding: 22px 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.4s, padding 0.4s;
-        }
+    position: fixed;
+    left: 0; right: 0;
+    z-index: 1000;
+    padding: 22px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.4s, padding 0.4s;
+}
         nav.scrolled {
-            background: rgba(5,5,5,0.95);
-            backdrop-filter: blur(20px);
-            padding: 16px 60px;
-            border-bottom: 1px solid rgba(225,6,0,0.2);  /* was 0.08 → more visible */
-        }
+    background: rgba(5,5,5,0.95);
+    backdrop-filter: blur(20px);
+    padding: 16px 60px;
+    border-bottom: 1px solid rgba(225,6,0,0.2);
+}
         .nav-logo {
             font-family: 'Bebas Neue', cursive;
             font-size: 1.9rem;                     /* was 1.6rem */
@@ -1091,4 +1091,4 @@
     @include('home._scripts-nav')
     @include('home._scripts-three')
 </body>
-</html>j
+</html>

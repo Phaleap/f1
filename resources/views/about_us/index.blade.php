@@ -75,7 +75,7 @@
             <div class="driver-card" data-driver="0" id="driverCard0">
                 <div class="driver-card__inner">
                     <div class="driver-card__img">
-                        <img src="https://placehold.co/400x560/0a0a0a/333?text=MAX+33" alt="Max Verstappen" loading="lazy">
+                        <img src="https://img.redbull.com/images/c_crop,x_1007,y_0,h_2646,w_1985/c_fill,w_450,h_600/q_auto,f_auto/redbullcom/2024/11/24/nrqoxx9as35r5ry8ashm/max-verstapen-2024-f1-world-champion-four" alt="Max Verstappen" loading="lazy">
                         <div class="driver-card__img-gradient"></div>
                     </div>
                     <div class="driver-card__num">01</div>
@@ -85,7 +85,7 @@
             <div class="driver-card" data-driver="1" id="driverCard1">
                 <div class="driver-card__inner">
                     <div class="driver-card__img">
-                        <img src="https://placehold.co/400x560/0a0a0a/333?text=LANDO+4" alt="Lando Norris" loading="lazy">
+                        <img src="https://images.ctfassets.net/gy95mqeyjg28/24btmVlGxKrB3tHVKII0H/a7942e72bab1beef0083a9dc896b9605/2026_web_team_Lando_2.jpg?w=3840&q=75&fm=webp&fit=fill" alt="Lando Norris" loading="lazy">
                         <div class="driver-card__img-gradient"></div>
                     </div>
                     <div class="driver-card__num">02</div>
@@ -95,7 +95,7 @@
             <div class="driver-card" data-driver="2" id="driverCard2">
                 <div class="driver-card__inner">
                     <div class="driver-card__img">
-                        <img src="https://placehold.co/400x560/0a0a0a/333?text=CHARLES+16" alt="Charles Leclerc" loading="lazy">
+                        <img src="https://charlesleclerc.com/wp-content/uploads/2025/02/Leclerc-About-02-Official-Pic-1.jpg" alt="Charles Leclerc" loading="lazy">
                         <div class="driver-card__img-gradient"></div>
                     </div>
                     <div class="driver-card__num">03</div>
@@ -168,12 +168,12 @@
             <div class="team-member__card-wrap" id="memberCard1Wrap">
                 <div class="team-member__card" id="memberCard1">
                     <div class="team-member__card-img">
-                        <img src="https://placehold.co/380x520/0f0f0f/222?text=FOUNDER" alt="Team Member 1" loading="lazy">
+                        <img src="{{ asset('build/assets/leap.png') }}" alt="Team Member 1" loading="lazy">
                         <div class="team-member__card-overlay"></div>
                     </div>
                     <div class="team-member__card-footer">
                         <span class="member-role">Founder</span>
-                        <span class="member-name">Your Name</span>
+                        <span class="member-name">Minh Phaleap</span>
                     </div>
                     <div class="team-member__card-shine" id="memberShine1"></div>
                 </div>
@@ -202,12 +202,12 @@
             <div class="team-member__card-wrap" id="memberCard2Wrap">
                 <div class="team-member__card" id="memberCard2">
                     <div class="team-member__card-img">
-                        <img src="https://placehold.co/380x520/0f0f0f/222?text=CO-FOUNDER" alt="Team Member 2" loading="lazy">
+                        <img src="{{ asset('build/assets/hov.jpg') }}" alt="Team Member 2" loading="lazy">
                         <div class="team-member__card-overlay"></div>
                     </div>
                     <div class="team-member__card-footer">
                         <span class="member-role">Co-Founder</span>
-                        <span class="member-name">Partner Name</span>
+                        <span class="member-name">Ing Bunhov</span>
                     </div>
                     <div class="team-member__card-shine" id="memberShine2"></div>
                 </div>
@@ -458,8 +458,8 @@
 
 .driver-card {
     position: absolute;
-    width: 240px;
-    height: 340px;
+    width: 440px;
+    height: 540px;
     border-radius: 2px;
     overflow: hidden;
     cursor: pointer;
@@ -671,8 +671,8 @@
 
 .team-member__card {
     position: relative;
-    width: 280px;
-    height: 400px;
+    width: 480px;
+    height: 600px;
     border-radius: 2px;
     overflow: hidden;
     transform-style: preserve-3d;
