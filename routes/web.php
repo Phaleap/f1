@@ -16,6 +16,12 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\InventoryController as AdminInventoryController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\TeamController;
+use App\Http\Controllers\Admin\DriverController;
+use App\Http\Controllers\Admin\CarModelController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\BrandController;
 
 
 Route::get('/', function () {
@@ -46,7 +52,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
-Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
+
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');      // if not already there
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show'); // needed for grid card links
 Route::get('/cars', [ProductController::class, 'cars'])->name('products.cars');
@@ -91,7 +97,10 @@ Route::get('/about', function () {
 })->name('about');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    // Dashboard
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     // Products
     Route::resource('products', AdminProductController::class);
     Route::delete('products/image/{image}', [AdminProductController::class, 'deleteImage'])->name('products.image.delete');
@@ -108,8 +117,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('users/{user}', [AdminUserController::class, 'show'])->name('users.show');
     Route::post('users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
-
-    
+    // Teams, Drivers, Car Models, Categories, Brands
+    Route::resource('teams', TeamController::class);
+    Route::resource('drivers', DriverController::class);
+    Route::resource('car-models', CarModelController::class)->parameters(['car-models' => 'carModel']);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('brands', BrandController::class);
 });
 
 
