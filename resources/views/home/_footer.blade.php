@@ -44,10 +44,10 @@
             <div class="footer-col">
                 <div class="footer-col-title">Shop</div>
                 <ul>
-                    <li><a href="{{ route('products.cars') }}">Race Cars</a></li>
-                    <li><a href="{{ route('products.merchandise') }}">Merchandise</a></li>
-                    <li><a href="#">Helmets</a></li>
-                    <li><a href="#">Accessories</a></li>
+                    <li><a href="{{ route('shop') }}">Race Cars</a></li>
+                    <li><a href="{{ route('shop') }}">Merchandise</a></li>
+                    <li><a href="{{ route('shop') }}">Helmets</a></li>
+                    <li><a href="{{ route('shop') }}">Accessories</a></li>
                 </ul>
             </div>
 

@@ -18,7 +18,7 @@
             </p>
             <div class="hero-cta">
                 <a href="#products-preview" class="btn-primary">Shop Now</a>
-                <a href="{{ route('products.cars') }}" class="btn-secondary">Explore Cars</a>
+                <a href="{{ route('shop') }}" class="btn-secondary">Explore Cars</a>
             </div>
         </div>
 

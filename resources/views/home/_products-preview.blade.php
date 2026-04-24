@@ -11,7 +11,7 @@
         </div>
         <div class="cars-header__right">
             <p class="cars-subtext">Precision-engineered scale replicas. <br>Official F1 licensed collectibles.</p>
-            <a href="{{ route('products.cars') }}" class="btn-view-all">
+            <a href="{{ route('shop') }}" class="btn-view-all">
                 <span>View Full Collection</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M1 8h14M8 1l7 7-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
@@ -23,7 +23,7 @@
     <div class="cars-grid">
         @forelse($products ?? [] as $product)
 
-            <a href="{{ route('products.show', $product) }}"
+            <a href="{{ route('shop', $product) }}"
                class="car-card {{ $loop->first ? 'car-card--hero' : '' }}"
                data-index="{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}">
 

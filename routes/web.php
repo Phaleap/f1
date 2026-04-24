@@ -45,9 +45,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Move these OUT of the auth middleware group
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
+Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');      // if not already there
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show'); // needed for grid card links
 Route::get('/cars', [ProductController::class, 'cars'])->name('products.cars');
 Route::get('/merchandise', [ProductController::class, 'merchandise'])->name('products.merchandise');
 
@@ -83,6 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/payment/{order}', [PaymentController::class, 'process'])->name('payment.process');
     // Shipment tracking
     Route::get('/track/{order}', [ShipmentController::class, 'track'])->name('shipment.track');    
+    //shop
 });
 Route::get('/about', function () {
     return view('about_us.index');

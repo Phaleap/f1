@@ -97,7 +97,7 @@
                             @if($car->carModel?->season_year)
                             <div class="spec-season">{{ $car->carModel->season_year }} SEASON</div>
                             @endif
-                            <a href="{{ route('products.show', $car) }}" class="btn-primary car-cta">
+                            <a href="{{ route('shop', $car) }}" class="btn-primary car-cta">
                                 Configure &amp; Buy
                             </a>
                         </div>

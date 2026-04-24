@@ -114,4 +114,48 @@ class ProductController extends Controller
         $request->merge(['type' => 'merchandise']);
         return $this->index($request);
     }
+   public function shop()
+{
+    // Section 1 — Featured cars with driver (hero showcase)
+    $featuredCars = Product::with([
+            'mainImage',
+            'carModel.team',
+            'carModel.driver',
+        ])
+        ->where('status', 'active')
+        ->where('product_type', 'car')
+        ->whereHas('carModel.driver')
+        ->latest()
+        ->take(3)
+        ->get();
+
+    // Section 2 — All cars grid (paginated)
+    $allCars = Product::with([
+            'mainImage',
+            'carModel.team',
+            'carModel.driver',
+        ])
+        ->where('status', 'active')
+        ->where('product_type', 'car')
+        ->latest()
+        ->paginate(9, ['*'], 'cars_page');
+
+    // Section 3 — Merchandise (paginated, load all for client-side category filter)
+    // Using a high perPage so category filter works client-side without pagination resets
+    $merchandise = Product::with(['mainImage', 'category', 'brand'])
+        ->where('status', 'active')
+        ->where('product_type', 'merchandise')
+        ->latest()
+        ->paginate(48, ['*'], 'merch_page');
+
+    // Merchandise categories — only categories that actually have active merch products
+    $merchCategories = \App\Models\Category::whereHas('products', function ($q) {
+            $q->where('status', 'active')->where('product_type', 'merchandise');
+        })
+        ->whereNull('parent_category_id') // top-level only
+        ->orderBy('category_name')
+        ->get();
+
+    return view('shop.index', compact('featuredCars', 'allCars', 'merchandise', 'merchCategories'));
+}
 }

@@ -23,7 +23,7 @@
                         <h3>Ferrari Racing Jacket</h3>
                         <p class="product-price">$120.00</p>
 
-                        <a href="{{ route('products.show', $i) }}" class="btn btn-primary">View Product</a>
+                        <a href="{{ route('shop', $i) }}" class="btn btn-primary">View Product</a>
                     </div>
                 </div>
             @endfor
