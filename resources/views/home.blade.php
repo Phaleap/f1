@@ -915,11 +915,7 @@
     @include('home._marquee', ['direction' => 'normal', 'duration' => '20s'])
     @include('home._sticky-car')
     @include('home._marquee', ['direction' => 'reverse', 'duration' => '25s'])
-    @include('home._featured-cars')
-    @include('home._products-preview')
-    @include('home._reviews')
-    @include('home._stats')
-    @include('home._awards')
+    @include('home._f1-history')
     @include('home._footer')
 
     <audio id="bg-music" loop>
