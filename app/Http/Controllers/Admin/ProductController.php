@@ -50,7 +50,9 @@ class ProductController extends Controller
             'status'       => 'required|in:active,inactive',
         ]);
 
-        $product = Product::create($request->except('images', 'variants'));
+        $data = $request->except('images', 'variants');
+$data['is_featured'] = $request->has('is_featured');
+$product = Product::create($data);
 
         // Handle images
         if ($request->hasFile('images')) {
@@ -128,7 +130,9 @@ class ProductController extends Controller
             'status'       => 'required|in:active,inactive',
         ]);
 
-        $product->update($request->except('images', 'variants'));
+        $data = $request->except('images', 'variants');
+$data['is_featured'] = $request->has('is_featured');
+$product->update($data);
 
         // Handle new images
         if ($request->hasFile('images')) {
@@ -160,4 +164,12 @@ class ProductController extends Controller
         $image->delete();
         return back()->with('success', 'Image removed.');
     }
+    public function toggleFeatured(Product $product)
+{
+    $newValue = !$product->is_featured;
+    $product->update(['is_featured' => $newValue]);
+    return back()->with('success', 
+        $newValue ? '★ Added to hero showcase.' : 'Removed from hero.'
+    );
+}
 }

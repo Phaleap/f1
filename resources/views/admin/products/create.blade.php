@@ -98,6 +98,17 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+    <label class="form-label">Featured in Hero</label>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+        <input type="checkbox" name="is_featured" id="is_featured" value="1"
+               {{ old('is_featured') ? 'checked' : '' }}
+               style="width:16px;height:16px;cursor:pointer;">
+        <label for="is_featured" style="cursor:pointer;margin:0;color:#6b7280;font-size:0.875rem;">
+            Show this car in the hero showcase
+        </label>
+    </div>
+</div>
         </div>
 
         {{-- Variants --}}

@@ -118,16 +118,15 @@ class ProductController extends Controller
 {
     // Section 1 — Featured cars with driver (hero showcase)
     $featuredCars = Product::with([
-            'mainImage',
-            'carModel.team',
-            'carModel.driver',
-        ])
-        ->where('status', 'active')
-        ->where('product_type', 'car')
-        ->whereHas('carModel.driver')
-        ->latest()
-        ->take(3)
-        ->get();
+        'mainImage',
+        'carModel.team',
+        'carModel.driver',
+    ])
+    ->where('status', 'active')
+    ->where('product_type', 'car')
+    ->where('is_featured', true)  // ← this line
+    ->take(3)
+    ->get();
 
     // Section 2 — All cars grid (paginated)
     $allCars = Product::with([

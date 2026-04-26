@@ -27,6 +27,7 @@
                     <th>Brand</th>
                     <th>Price</th>
                     <th>Status</th>
+                    <th style="text-align:center;">Featured</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -60,6 +61,26 @@
                             <span class="badge badge-red">Inactive</span>
                         @endif
                     </td>
+
+                    {{-- ★ Featured toggle (cars only) --}}
+                    <td style="text-align:center;">
+                        @if($product->product_type === 'car')
+                            <form method="POST"
+                                  action="{{ route('admin.products.toggleFeatured', $product) }}">
+                                @csrf @method('PATCH')
+                                <button type="submit"
+                                        title="{{ $product->is_featured ? 'Remove from hero' : 'Add to hero' }}"
+                                        style="background:none;border:none;cursor:pointer;font-size:1.3rem;line-height:1;
+                                               color:{{ $product->is_featured ? '#f59e0b' : '#d1d5db' }};
+                                               transition:color 0.2s;">
+                                    ★
+                                </button>
+                            </form>
+                        @else
+                            <span style="color:#e5e7eb;">—</span>
+                        @endif
+                    </td>
+
                     <td>
                         <div style="display:flex;gap:6px;">
                             <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-secondary">Edit</a>
@@ -72,7 +93,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="9" style="text-align:center;color:#9ca3af;padding:40px;">No products yet. <a href="{{ route('admin.products.create') }}">Add one</a></td></tr>
+                <tr><td colspan="10" style="text-align:center;color:#9ca3af;padding:40px;">No products yet. <a href="{{ route('admin.products.create') }}">Add one</a></td></tr>
                 @endforelse
             </tbody>
         </table>

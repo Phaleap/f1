@@ -123,6 +123,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('car-models', CarModelController::class)->parameters(['car-models' => 'carModel']);
     Route::resource('categories', CategoryController::class);
     Route::resource('brands', BrandController::class);
+    Route::patch('products/{product}/toggle-featured', 
+    [App\Http\Controllers\Admin\ProductController::class, 'toggleFeatured']
+)->name('products.toggleFeatured');
 });
 
 

@@ -4,10 +4,11 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'category_id', 'brand_id', 'supplier_id', 'car_model_id',
-        'product_name', 'sku', 'description', 'base_price', 'cost_price',
-        'product_type', 'material', 'weight', 'warranty_id', 'status'
-    ];
+    'category_id', 'brand_id', 'supplier_id', 'car_model_id',
+    'product_name', 'sku', 'description', 'base_price', 'cost_price',
+    'product_type', 'material', 'weight', 'warranty_id', 'status',
+    'is_featured', // ← add this
+];
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
