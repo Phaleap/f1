@@ -67,40 +67,36 @@ class ProductController extends Controller
         return view('products.index', compact('products', 'categories', 'brands', 'teams'));
     }
 
-    // Single product detail
-    public function show(Product $product)
-    {
-        if ($product->status !== 'active') {
-            abort(404);
-        }
-
-        $product->load([
-            'images',
-            'variants',
-            'brand',
-            'category',
-            'carModel.team',
-            'carModel.driver',
-            'warranty',
-            'reviews.user',
-            'discounts',
-            'promotions',
-        ]);
-
-        // Get stock info
-        $inventory = $product->inventory()->with('variant')->get();
-
-        // Related products — same category, exclude current
-        $related = Product::with('mainImage')
-            ->where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->where('status', 'active')
-            ->limit(4)
-            ->get();
-
-        return view('products.show', compact('product', 'inventory', 'related'));
+public function show(Product $product)
+{
+    if ($product->status !== 'active') {
+        abort(404);
     }
 
+    $product->load([
+        'images',
+        'variants.inventory',   // ← load inventory per variant
+        'inventory',            // ← total stock
+        'brand',
+        'category',
+        'carModel.team',
+        'carModel.driver',
+        'warranty',
+        'reviews.user',
+        'discounts',
+        'promotions',
+    ]);
+
+    // Related products — same category, exclude current (use correct PK)
+    $relatedProducts = Product::with(['mainImage', 'carModel.team'])
+        ->where('category_id', $product->category_id)
+        ->where('id', '!=', $product->id)  // ← fixed
+        ->where('status', 'active')
+        ->limit(3)
+        ->get();
+
+    return view('shop.show', compact('product', 'relatedProducts'));  // ← fixed path
+}
     // Cars only
     public function cars(Request $request)
     {
