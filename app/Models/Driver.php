@@ -7,7 +7,7 @@ class Driver extends Model
     protected $primaryKey = 'driver_id';
     protected $fillable = [
         'team_id', 'driver_name', 'nationality',
-        'car_number', 'date_of_birth', 'championships'
+        'car_number', 'date_of_birth', 'championships', 'photo_url'
     ];
     protected $casts = ['date_of_birth' => 'date'];
     public function team()

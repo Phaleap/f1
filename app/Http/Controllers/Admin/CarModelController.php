@@ -26,16 +26,16 @@ class CarModelController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'team_id'     => 'nullable|exists:teams,id',
-            'driver_id'   => 'nullable|exists:drivers,id',
-            'model_name'  => 'required|string|max:255',
-            'season_year' => 'required|integer|min:1950|max:2099',
-            'engine'      => 'nullable|string|max:255',
-            'horsepower'  => 'nullable|integer',
-            'top_speed'   => 'nullable|numeric',
-            'color'       => 'nullable|string|max:50',
-            'description' => 'nullable|string',
-        ]);
+        'team_id'     => 'nullable|exists:teams,team_id',     // ✅ fix this
+        'driver_id'   => 'nullable|exists:drivers,driver_id', // ✅ fix this
+        'model_name'  => 'required|string|max:255',
+        'season_year' => 'required|integer|min:1950|max:2099',
+        'engine'      => 'nullable|string|max:255',
+        'horsepower'  => 'nullable|integer',
+        'top_speed'   => 'nullable|numeric',
+        'color'       => 'nullable|string|max:50',
+        'description' => 'nullable|string',
+    ]);
 
         CarModel::create($data);
         return redirect()->route('admin.car-models.index')->with('success', 'Car model created.');
@@ -51,16 +51,16 @@ class CarModelController extends Controller
     public function update(Request $request, CarModel $carModel)
     {
         $data = $request->validate([
-            'team_id'     => 'nullable|exists:teams,id',
-            'driver_id'   => 'nullable|exists:drivers,id',
-            'model_name'  => 'required|string|max:255',
-            'season_year' => 'required|integer|min:1950|max:2099',
-            'engine'      => 'nullable|string|max:255',
-            'horsepower'  => 'nullable|integer',
-            'top_speed'   => 'nullable|numeric',
-            'color'       => 'nullable|string|max:50',
-            'description' => 'nullable|string',
-        ]);
+    'team_id'     => 'nullable|exists:teams,team_id',      // ✅
+    'driver_id'   => 'nullable|exists:drivers,driver_id',  // ✅
+    'model_name'  => 'required|string|max:255',
+    'season_year' => 'required|integer|min:1950|max:2099',
+    'engine'      => 'nullable|string|max:255',
+    'horsepower'  => 'nullable|integer',
+    'top_speed'   => 'nullable|numeric',
+    'color'       => 'nullable|string|max:50',
+    'description' => 'nullable|string',
+]);
 
         $carModel->update($data);
         return redirect()->route('admin.car-models.index')->with('success', 'Car model updated.');

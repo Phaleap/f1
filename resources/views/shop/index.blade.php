@@ -716,15 +716,17 @@
                         <div class="driver-car-badge-model">{{ $car->carModel?->model_name ?? '' }}</div>
                     </div>
                     <div class="driver-photo-wrap">
-                        @if($driver?->photo_url)
-                            <img src="{{ asset('storage/' . $driver->photo_url) }}"
-                                 alt="{{ $driver->driver_name }}"
-                                 onerror="this.src='https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=80'">
-                        @else
-                            <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=80"
-                                 alt="{{ $driver?->driver_name ?? 'Driver' }}">
-                        @endif
-                    </div>
+    @php
+        $photoSrc = match(true) {
+            !$driver || !$driver->photo_url => 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=80',
+            str_starts_with($driver->photo_url, 'http') => $driver->photo_url,
+            default => asset('storage/' . $driver->photo_url)
+        };
+    @endphp
+    <img src="{{ $photoSrc }}"
+         alt="{{ $driver?->driver_name ?? 'Driver' }}"
+         onerror="this.src='https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=80'">
+</div>
                     <div class="driver-overlay"></div>
                     <div class="driver-info">
                         <div class="driver-nationality">{{ $driver?->nationality ?? '—' }}</div>

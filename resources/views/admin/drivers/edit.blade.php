@@ -21,11 +21,13 @@
                 <div class="form-group">
                     <label>Team</label>
                     <select name="team_id">
-                        <option value="">— No team —</option>
-                        @foreach($teams as $team)
-                        <option value="{{ $team->id }}" {{ old('team_id', $driver->team_id) == $team->id ? 'selected' : '' }}>{{ $team->team_name }}</option>
-                        @endforeach
-                    </select>
+    <option value="">— No team —</option>
+    @foreach($teams as $team)
+    <option value="{{ $team->team_id }}" {{ old('team_id', $driver->team_id) == $team->team_id ? 'selected' : '' }}>
+        {{ $team->team_name }}
+    </option>
+    @endforeach
+</select>
                 </div>
                 <div class="form-group">
                     <label>Nationality</label>

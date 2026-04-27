@@ -25,22 +25,24 @@
                 <div class="form-group">
                     <label>Team</label>
                     <select name="team_id">
-                        <option value="">— Select team —</option>
-                        @foreach($teams as $team)
-                        <option value="{{ $team->id }}" {{ old('team_id', $carModel->team_id) == $team->id ? 'selected' : '' }}>{{ $team->team_name }}</option>
-                        @endforeach
-                    </select>
+    <option value="">— Select team —</option>
+    @foreach($teams as $team)
+    <option value="{{ $team->team_id }}" {{ old('team_id', $carModel->team_id) == $team->team_id ? 'selected' : '' }}>
+        {{ $team->team_name }}
+    </option>
+    @endforeach
+</select>
                 </div>
                 <div class="form-group">
                     <label>Driver</label>
                     <select name="driver_id">
-                        <option value="">— Select driver —</option>
-                        @foreach($drivers as $driver)
-                        <option value="{{ $driver->id }}" {{ old('driver_id', $carModel->driver_id) == $driver->id ? 'selected' : '' }}>
-                            {{ $driver->driver_name }} {{ $driver->team ? '(' . $driver->team->team_name . ')' : '' }}
-                        </option>
-                        @endforeach
-                    </select>
+    <option value="">— Select driver —</option>
+    @foreach($drivers as $driver)
+    <option value="{{ $driver->driver_id }}" {{ old('driver_id', $carModel->driver_id) == $driver->driver_id ? 'selected' : '' }}>
+        {{ $driver->driver_name }} {{ $driver->team ? '(' . $driver->team->team_name . ')' : '' }}
+    </option>
+    @endforeach
+</select>
                 </div>
                 <div class="form-group">
                     <label>Engine</label>

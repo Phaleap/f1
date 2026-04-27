@@ -24,14 +24,14 @@ class DriverController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'team_id'       => 'nullable|exists:teams,id',
-            'driver_name'   => 'required|string|max:255',
-            'nationality'   => 'nullable|string|max:100',
-            'car_number'    => 'nullable|integer',
-            'date_of_birth' => 'nullable|date',
-            'championships' => 'nullable|integer|min:0',
-            'photo_url'     => 'nullable|string|max:500',
-        ]);
+    'team_id'       => 'nullable|exists:teams,team_id', // ✅ fixed
+    'driver_name'   => 'required|string|max:255',
+    'nationality'   => 'nullable|string|max:100',
+    'car_number'    => 'nullable|integer',
+    'date_of_birth' => 'nullable|date',
+    'championships' => 'nullable|integer|min:0',
+    'photo_url'     => 'nullable|string|max:500',
+]);
 
         Driver::create($data);
         return redirect()->route('admin.drivers.index')->with('success', 'Driver created.');
@@ -44,20 +44,20 @@ class DriverController extends Controller
     }
 
     public function update(Request $request, Driver $driver)
-    {
-        $data = $request->validate([
-            'team_id'       => 'nullable|exists:teams,id',
-            'driver_name'   => 'required|string|max:255',
-            'nationality'   => 'nullable|string|max:100',
-            'car_number'    => 'nullable|integer',
-            'date_of_birth' => 'nullable|date',
-            'championships' => 'nullable|integer|min:0',
-            'photo_url'     => 'nullable|string|max:500',
-        ]);
+{
+    $data = $request->validate([
+        'team_id'       => 'nullable|exists:teams,team_id', // ✅
+        'driver_name'   => 'required|string|max:255',
+        'nationality'   => 'nullable|string|max:100',
+        'car_number'    => 'nullable|integer',
+        'date_of_birth' => 'nullable|date',
+        'championships' => 'nullable|integer|min:0',
+        'photo_url'     => 'nullable|string|max:500',
+    ]);
 
-        $driver->update($data);
-        return redirect()->route('admin.drivers.index')->with('success', 'Driver updated.');
-    }
+    $driver->update($data);
+    return redirect()->route('admin.drivers.index')->with('success', 'Driver updated.');
+}
 
     public function destroy(Driver $driver)
     {

@@ -22,6 +22,9 @@
     </div>
 @endif
 
+{{-- ============================================================
+     MAIN EDIT FORM — no nested <form> tags inside this block
+     ============================================================ --}}
 <form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data">
 @csrf @method('PUT')
 
@@ -84,7 +87,7 @@
                     <select name="car_model_id" class="form-control">
                         <option value="">— None —</option>
                         @foreach($carModels as $cm)
-                            <option value="{{ $cm->id }}" {{ $product->car_model_id == $cm->id ? 'selected' : '' }}>
+                            <option value="{{ $cm->car_model_id }}" {{ $product->car_model_id == $cm->car_model_id ? 'selected' : '' }}>
                                 {{ $cm->model_name }} ({{ $cm->season_year }}) — {{ $cm->team?->team_name }}
                             </option>
                         @endforeach
@@ -100,7 +103,6 @@
                         <input type="text" name="material" class="form-control" value="{{ old('material', $product->material) }}">
                     </div>
                 </div>
-                {{-- ★ Featured in Hero --}}
                 <div class="form-group" style="margin-top:16px;">
                     <label class="form-label">Featured in Hero</label>
                     <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
@@ -116,6 +118,7 @@
         </div>
 
         {{-- Existing Images --}}
+        {{-- NOTE: No <form> tags here — image delete buttons trigger hidden forms rendered OUTSIDE the main form below --}}
         @if($product->images && $product->images->count())
         <div class="card">
             <div class="card-header"><h3 class="card-title">Current Images</h3></div>
@@ -128,11 +131,13 @@
                         @if($img->is_main)
                             <span style="position:absolute;top:2px;left:2px;background:#e10600;color:#fff;font-size:10px;padding:1px 4px;border-radius:3px;">Main</span>
                         @endif
-                        <form method="POST" action="{{ route('admin.products.image.delete', $img) }}"
-                              onsubmit="return confirm('Remove this image?')" style="margin-top:4px;">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-danger" style="width:100%;padding:2px 0;">Remove</button>
-                        </form>
+                        {{-- This button submits a SEPARATE form rendered outside the main form --}}
+                        <button type="button"
+                                class="btn btn-sm btn-danger"
+                                style="width:100%;padding:2px 0;margin-top:4px;"
+                                onclick="if(confirm('Remove this image?')) document.getElementById('delete-img-{{ $img->id }}').submit()">
+                            Remove
+                        </button>
                     </div>
                     @endforeach
                 </div>
@@ -245,13 +250,36 @@
 
 </div>
 </form>
+{{-- ============================================================
+     END OF MAIN EDIT FORM
+     ============================================================ --}}
 
+
+{{-- Delete Product Form — safely outside the main form --}}
 <form method="POST" action="{{ route('admin.products.destroy', $product) }}"
       onsubmit="return confirm('Permanently delete this product?')"
       style="margin-top:12px;">
     @csrf @method('DELETE')
     <button type="submit" class="btn btn-danger" style="width:100%;">Delete Product</button>
 </form>
+
+
+{{-- ============================================================
+     Image delete forms — rendered here, OUTSIDE the main form,
+     triggered by the buttons inside the image card above via JS.
+     This fixes the nested-form bug that was causing deletes.
+     ============================================================ --}}
+@if($product->images && $product->images->count())
+    @foreach($product->images as $img)
+    <form id="delete-img-{{ $img->id }}"
+          method="POST"
+          action="{{ route('admin.products.image.delete', $img) }}"
+          style="display:none;">
+        @csrf @method('DELETE')
+    </form>
+    @endforeach
+@endif
+
 
 <script>
 document.getElementById('productType').addEventListener('change', function() {
