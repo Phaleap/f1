@@ -13,7 +13,6 @@ use App\Models\ProductImage;
 use App\Models\ProductVariant;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -50,9 +49,9 @@ class ProductController extends Controller
             'status'       => 'required|in:active,inactive',
         ]);
 
-        $data = $request->except('images', 'variants');
-$data['is_featured'] = $request->has('is_featured');
-$product = Product::create($data);
+        $data = $request->except('images', 'variants', 'stock');
+        $data['is_featured'] = $request->has('is_featured');
+        $product = Product::create($data);
 
         // Handle images
         if ($request->hasFile('images')) {
@@ -71,6 +70,8 @@ $product = Product::create($data);
         // Handle variants
         if ($request->filled('variants')) {
             foreach ($request->variants as $variant) {
+                if (empty($variant['name'])) continue;
+
                 $v = ProductVariant::create([
                     'product_id'   => $product->id,
                     'variant_name' => $variant['name'],
@@ -82,7 +83,6 @@ $product = Product::create($data);
                     'created_at'   => now(),
                 ]);
 
-                // Create inventory record for variant
                 Inventory::create([
                     'product_id'     => $product->id,
                     'variant_id'     => $v->variant_id,
@@ -92,9 +92,10 @@ $product = Product::create($data);
                 ]);
             }
         } else {
-            // No variants — create single inventory record
+            // No variants — single inventory record
             Inventory::create([
                 'product_id'     => $product->id,
+                'variant_id'     => null,
                 'stock_quantity' => $request->stock ?? 0,
                 'minimum_stock'  => 5,
                 'last_updated'   => now(),
@@ -107,7 +108,7 @@ $product = Product::create($data);
 
     public function edit(Product $product)
     {
-        $product->load(['images', 'variants', 'inventory']);
+        $product->load(['images', 'variants.inventory', 'inventory']);
         $categories = Category::all();
         $brands     = Brand::all();
         $suppliers  = Supplier::all();
@@ -130,9 +131,9 @@ $product = Product::create($data);
             'status'       => 'required|in:active,inactive',
         ]);
 
-        $data = $request->except('images', 'variants');
-$data['is_featured'] = $request->has('is_featured');
-$product->update($data);
+        $data = $request->except('images', 'variants', 'existing_variants', 'stock');
+        $data['is_featured'] = $request->has('is_featured');
+        $product->update($data);
 
         // Handle new images
         if ($request->hasFile('images')) {
@@ -144,6 +145,84 @@ $product->update($data);
                     'is_main'    => false,
                     'sort_order' => $product->images()->count() + $index + 1,
                     'created_at' => now(),
+                ]);
+            }
+        }
+
+        // Update base stock (no variants)
+        if ($request->has('stock')) {
+            $inv = $product->inventory()->whereNull('variant_id')->first();
+            if ($inv) {
+                $inv->update([
+                    'stock_quantity' => $request->stock,
+                    'last_updated'   => now(),
+                ]);
+            } else {
+                Inventory::create([
+                    'product_id'     => $product->id,
+                    'variant_id'     => null,
+                    'stock_quantity' => $request->stock ?? 0,
+                    'minimum_stock'  => 5,
+                    'last_updated'   => now(),
+                ]);
+            }
+        }
+
+        // Update existing variants
+        if ($request->filled('existing_variants')) {
+            foreach ($request->existing_variants as $variantId => $data) {
+                $variant = ProductVariant::find($variantId);
+                if (!$variant) continue;
+
+                $variant->update([
+                    'variant_name' => $data['name'],
+                    'sku'          => $data['sku'] ?? $variant->sku,
+                    'size'         => $data['size'] ?? null,
+                    'color'        => $data['color'] ?? null,
+                    'extra_price'  => $data['extra_price'] ?? 0,
+                ]);
+
+                // Update or create inventory for this variant
+                $inv = $variant->inventory()->first();
+                if ($inv) {
+                    $inv->update([
+                        'stock_quantity' => $data['stock'] ?? 0,
+                        'last_updated'   => now(),
+                    ]);
+                } else {
+                    Inventory::create([
+                        'product_id'     => $product->id,
+                        'variant_id'     => $variant->variant_id,
+                        'stock_quantity' => $data['stock'] ?? 0,
+                        'minimum_stock'  => 5,
+                        'last_updated'   => now(),
+                    ]);
+                }
+            }
+        }
+
+        // Add new variants
+        if ($request->filled('variants')) {
+            foreach ($request->variants as $variantData) {
+                if (empty($variantData['name'])) continue;
+
+                $variant = ProductVariant::create([
+                    'product_id'   => $product->id,
+                    'variant_name' => $variantData['name'],
+                    'sku'          => $variantData['sku'] ?? null,
+                    'size'         => $variantData['size'] ?? null,
+                    'color'        => $variantData['color'] ?? null,
+                    'extra_price'  => $variantData['extra_price'] ?? 0,
+                    'status'       => 'active',
+                    'created_at'   => now(),
+                ]);
+
+                Inventory::create([
+                    'product_id'     => $product->id,
+                    'variant_id'     => $variant->variant_id,
+                    'stock_quantity' => $variantData['stock'] ?? 0,
+                    'minimum_stock'  => 5,
+                    'last_updated'   => now(),
                 ]);
             }
         }
@@ -164,12 +243,13 @@ $product->update($data);
         $image->delete();
         return back()->with('success', 'Image removed.');
     }
+
     public function toggleFeatured(Product $product)
-{
-    $newValue = !$product->is_featured;
-    $product->update(['is_featured' => $newValue]);
-    return back()->with('success', 
-        $newValue ? '★ Added to hero showcase.' : 'Removed from hero.'
-    );
-}
+    {
+        $newValue = !$product->is_featured;
+        $product->update(['is_featured' => $newValue]);
+        return back()->with('success',
+            $newValue ? '★ Added to hero showcase.' : 'Removed from hero.'
+        );
+    }
 }

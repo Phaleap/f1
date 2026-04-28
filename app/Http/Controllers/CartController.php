@@ -62,6 +62,16 @@ class CartController extends Controller
             ]);
         }
 
+        // Return JSON for AJAX requests (product page), redirect for normal POST
+        if ($request->ajax() || $request->wantsJson()) {
+            $cartCount = $cart->items()->sum('quantity');
+            return response()->json([
+                'success'    => true,
+                'cart_count' => $cartCount,
+                'message'    => $product->product_name . ' added to cart!',
+            ]);
+        }
+
         return back()->with('success', $product->product_name . ' added to cart!');
     }
 
@@ -70,12 +80,31 @@ class CartController extends Controller
         $request->validate(['quantity' => 'required|integer|min:1']);
         $item->update(['quantity' => $request->quantity]);
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+
         return back()->with('success', 'Cart updated.');
     }
 
     public function remove(CartItem $item)
     {
         $item->delete();
+
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+
         return back()->with('success', 'Item removed from cart.');
+    }
+
+    public function clear()
+    {
+        $cart = $this->authUser()->cart;
+        if ($cart) {
+            $cart->items()->delete();
+        }
+
+        return back()->with('success', 'Cart cleared.');
     }
 }

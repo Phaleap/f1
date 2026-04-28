@@ -118,7 +118,6 @@
         </div>
 
         {{-- Existing Images --}}
-        {{-- NOTE: No <form> tags here — image delete buttons trigger hidden forms rendered OUTSIDE the main form below --}}
         @if($product->images && $product->images->count())
         <div class="card">
             <div class="card-header"><h3 class="card-title">Current Images</h3></div>
@@ -131,7 +130,6 @@
                         @if($img->is_main)
                             <span style="position:absolute;top:2px;left:2px;background:#e10600;color:#fff;font-size:10px;padding:1px 4px;border-radius:3px;">Main</span>
                         @endif
-                        {{-- This button submits a SEPARATE form rendered outside the main form --}}
                         <button type="button"
                                 class="btn btn-sm btn-danger"
                                 style="width:100%;padding:2px 0;margin-top:4px;"
@@ -145,33 +143,71 @@
         </div>
         @endif
 
-        {{-- Variants --}}
-        @if($product->variants && $product->variants->count())
+        {{-- Variants & Stock — always visible --}}
         <div class="card">
-            <div class="card-header"><h3 class="card-title">Variants</h3></div>
+            <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+                <h3 class="card-title">Variants & Stock</h3>
+                <button type="button" class="btn btn-sm btn-secondary" onclick="addVariant()">+ Add Variant</button>
+            </div>
             <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th><th>Size</th><th>Color</th><th>Extra Price</th><th>Stock</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($product->variants as $v)
-                        <tr>
-                            <td>{{ $v->variant_name }}</td>
-                            <td>{{ $v->size ?? '—' }}</td>
-                            <td>{{ $v->color ?? '—' }}</td>
-                            <td>${{ number_format($v->extra_price, 2) }}</td>
-                            <td>{{ $v->inventory->sum('stock_quantity') }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <small style="color:#9ca3af;">To edit variants, use the Inventory section.</small>
+
+                {{-- Base stock (no variants) --}}
+                <div class="form-group">
+                    <label class="form-label">Stock (no variants)</label>
+                    <input type="number" name="stock" class="form-control" min="0"
+                           value="{{ old('stock', $product->inventory->whereNull('variant_id')->sum('stock_quantity')) }}">
+                    <small style="color:#9ca3af;">Only used if no variants are added below.</small>
+                </div>
+
+                {{-- Existing variants — only shown if product has variants --}}
+                @if($product->variants && $product->variants->count())
+                <div style="margin-top:16px;">
+                    <label class="form-label">Existing Variants</label>
+                    @foreach($product->variants as $v)
+                    <div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin-bottom:12px;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                            <div class="form-group">
+                                <label class="form-label">Variant Name</label>
+                                <input type="text" name="existing_variants[{{ $v->id }}][name]"
+                                       class="form-control" value="{{ $v->variant_name }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">SKU</label>
+                                <input type="text" name="existing_variants[{{ $v->id }}][sku]"
+                                       class="form-control" value="{{ $v->sku }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Size</label>
+                                <input type="text" name="existing_variants[{{ $v->id }}][size]"
+                                       class="form-control" value="{{ $v->size }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Color</label>
+                                <input type="text" name="existing_variants[{{ $v->id }}][color]"
+                                       class="form-control" value="{{ $v->color }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Extra Price</label>
+                                <input type="number" name="existing_variants[{{ $v->id }}][extra_price]"
+                                       class="form-control" step="0.01" value="{{ $v->extra_price }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Stock</label>
+                                <input type="number" name="existing_variants[{{ $v->id }}][stock]"
+                                       class="form-control" min="0"
+                                       value="{{ $v->inventory->sum('stock_quantity') }}">
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+
+                {{-- New variants added dynamically --}}
+                <div id="variantsList"></div>
+
             </div>
         </div>
-        @endif
 
     </div>
 
@@ -267,7 +303,6 @@
 {{-- ============================================================
      Image delete forms — rendered here, OUTSIDE the main form,
      triggered by the buttons inside the image card above via JS.
-     This fixes the nested-form bug that was causing deletes.
      ============================================================ --}}
 @if($product->images && $product->images->count())
     @foreach($product->images as $img)
@@ -285,5 +320,40 @@
 document.getElementById('productType').addEventListener('change', function() {
     document.getElementById('carSection').style.display = this.value === 'car' ? 'block' : 'none';
 });
+let variantCount = 0;
+function addVariant() {
+    variantCount++;
+    const div = document.createElement('div');
+    div.style.cssText = 'border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin-bottom:12px;position:relative;';
+    div.innerHTML = `
+        <button type="button" onclick="this.parentElement.remove()" style="position:absolute;top:8px;right:8px;background:none;border:none;cursor:pointer;color:#9ca3af;font-size:16px;">✕</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="form-group">
+                <label class="form-label">Variant Name</label>
+                <input type="text" name="variants[${variantCount}][name]" class="form-control" placeholder="e.g. Red / XL">
+            </div>
+            <div class="form-group">
+                <label class="form-label">SKU</label>
+                <input type="text" name="variants[${variantCount}][sku]" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Size</label>
+                <input type="text" name="variants[${variantCount}][size]" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Color</label>
+                <input type="text" name="variants[${variantCount}][color]" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Extra Price</label>
+                <input type="number" name="variants[${variantCount}][extra_price]" class="form-control" step="0.01" value="0">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Stock</label>
+                <input type="number" name="variants[${variantCount}][stock]" class="form-control" value="0">
+            </div>
+        </div>`;
+    document.getElementById('variantsList').appendChild(div);
+}
 </script>
 @endsection
