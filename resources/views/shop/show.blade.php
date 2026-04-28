@@ -923,30 +923,51 @@
 
             {{-- Add to Cart --}}
             <div class="cta-section">
-                <div class="qty-row">
-                    <button class="qty-btn" onclick="changeQty(-1)">−</button>
-                    <input class="qty-input" type="number" id="qtyInput" value="1" min="1" max="{{ $totalStock }}">
-                    <button class="qty-btn" onclick="changeQty(1)">+</button>
-                </div>
+                @if($product->product_type !== 'car')
+<div class="qty-row">
+    <button class="qty-btn" onclick="changeQty(-1)">−</button>
+    <input class="qty-input" type="number" id="qtyInput" value="1" min="1" max="{{ $totalStock }}">
+    <button class="qty-btn" onclick="changeQty(1)">+</button>
+</div>
+@endif
 
-                <form method="POST" 
-      action="{{ route('cart.add', $product) }}" 
-      id="cartForm" 
-      onsubmit="handleCart(event)">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->product_id }}">
-                    <input type="hidden" name="variant_id" id="variantIdInput" value="">
-                    <input type="hidden" name="quantity" id="quantityInput" value="1">
-                    <button type="submit" class="btn-add-cart" id="addCartBtn"
-                            {{ $totalStock <= 0 ? 'disabled' : '' }}>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M2 2h1.5l2 8h7l1.5-6H5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="7" cy="13" r="1" fill="currentColor"/>
-                            <circle cx="12" cy="13" r="1" fill="currentColor"/>
-                        </svg>
-                        {{ $totalStock <= 0 ? 'Out of Stock' : 'Add to Cart' }}
-                    </button>
-                </form>
+                @if($product->product_type === 'car')
+    @auth
+        <a href="{{ route('shop.car-request.create', $product->id) }}"
+           class="btn-add-cart"
+           style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:12px;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M2 8h12M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Request to Buy
+        </a>
+    @else
+        <a href="{{ route('login') }}"
+           class="btn-add-cart"
+           style="text-decoration:none;display:flex;align-items:center;justify-content:center;">
+            Login to Request
+        </a>
+    @endauth
+@else
+    <form method="POST"
+          action="{{ route('cart.add', $product) }}"
+          id="cartForm"
+          onsubmit="handleCart(event)">
+        @csrf
+        <input type="hidden" name="product_id" value="{{ $product->product_id }}">
+        <input type="hidden" name="variant_id" id="variantIdInput" value="">
+        <input type="hidden" name="quantity" id="quantityInput" value="1">
+        <button type="submit" class="btn-add-cart" id="addCartBtn"
+                {{ $totalStock <= 0 ? 'disabled' : '' }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M2 2h1.5l2 8h7l1.5-6H5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="7" cy="13" r="1" fill="currentColor"/>
+                <circle cx="12" cy="13" r="1" fill="currentColor"/>
+            </svg>
+            {{ $totalStock <= 0 ? 'Out of Stock' : 'Add to Cart' }}
+        </button>
+    </form>
+@endif
 
                 <button class="btn-wishlist">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -1231,13 +1252,18 @@ function changeQty(delta) {
     document.getElementById('quantityInput').value = val;
 }
 
-document.getElementById('qtyInput').addEventListener('input', function() {
-    document.getElementById('quantityInput').value = this.value;
-});
+const qtyInput = document.getElementById('qtyInput');
+if (qtyInput) {
+    qtyInput.addEventListener('input', function() {
+        document.getElementById('quantityInput').value = this.value;
+    });
+}
 
 /* ─── Cart handler ─── */
 function handleCart(e) {
     e.preventDefault();
+    const form = document.getElementById('cartForm');
+    const btn  = document.getElementById('addCartBtn')
 
     // If product has variants and none selected, shake the button
     const hasVariants = {{ $product->variants && $product->variants->count() > 0 ? 'true' : 'false' }};

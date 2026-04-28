@@ -10,6 +10,8 @@ class Product extends Model
         'product_name', 'sku', 'description', 'base_price', 'cost_price',
         'product_type', 'material', 'weight', 'warranty_id', 'status',
         'is_featured',
+        'requires_approval',
+        'is_purchasable_online',
     ];
 
     public function category()
@@ -60,4 +62,14 @@ class Product extends Model
     {
         return $this->hasMany(Review::class, 'product_id', 'id');
     }
+    // Add helper method:
+public function isCarProduct(): bool
+{
+    return $this->product_type === 'car';
+}
+
+// Add relationship:
+public function carPurchaseRequests() {
+    return $this->hasMany(CarPurchaseRequest::class, 'product_id');
+}
 }

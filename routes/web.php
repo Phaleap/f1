@@ -22,6 +22,9 @@ use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\CarModelController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Shop\CarPurchaseRequestController;
+use App\Http\Controllers\Admin\CarRequestController;
+use App\Http\Controllers\Admin\CarOrderController;
 
 
 Route::get('/', function () {
@@ -103,6 +106,10 @@ Route::middleware('auth')->group(function () {
 
     // Shipment
     Route::get('/track/{order}', [ShipmentController::class, 'track'])->name('shipment.track');
+    // Car Purchase Requests (user facing)
+    Route::get('/car-request/{productId}', [CarPurchaseRequestController::class, 'create'])->name('shop.car-request.create');
+    Route::post('/car-request', [CarPurchaseRequestController::class, 'store'])->name('shop.car-request.store');
+    Route::get('/my-car-requests', [CarPurchaseRequestController::class, 'myRequests'])->name('shop.car-request.my-requests');
 });
 
 
@@ -137,6 +144,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('car-models', CarModelController::class)->parameters(['car-models' => 'carModel']);
     Route::resource('categories', CategoryController::class);
     Route::resource('brands', BrandController::class);
+
+    // Car Requests
+    Route::get('car-requests', [CarRequestController::class, 'index'])->name('car-requests.index');
+    Route::get('car-requests/{id}', [CarRequestController::class, 'show'])->name('car-requests.show');
+    Route::post('car-requests/{id}/approve', [CarRequestController::class, 'approve'])->name('car-requests.approve');
+    Route::post('car-requests/{id}/reject', [CarRequestController::class, 'reject'])->name('car-requests.reject');
+
+    // Car Orders
+    Route::get('car-orders', [CarOrderController::class, 'index'])->name('car-orders.index');
+    Route::get('car-orders/{id}', [CarOrderController::class, 'show'])->name('car-orders.show');
+    Route::post('car-orders/{id}/confirm-payment', [CarOrderController::class, 'confirmWalkInPayment'])->name('car-orders.confirm-payment');
+    Route::post('car-orders/{id}/status', [CarOrderController::class, 'updateStatus'])->name('car-orders.update-status');
 });
 
 
