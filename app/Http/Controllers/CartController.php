@@ -18,13 +18,14 @@ class CartController extends Controller
     }
 
     public function index()
-    {
-        $cart  = $this->authUser()->cart;
-        $items = $cart ? $cart->items()->with(['product.mainImage', 'variant'])->get() : collect();
-        $total = $items->sum(fn($item) => ($item->unit_price) * $item->quantity);
+{
+    $cart  = $this->authUser()->cart;
+    $items = $cart ? $cart->items()->with(['product.mainImage', 'variant'])->get() : collect();
+    $total = $items->sum(fn($item) => ($item->unit_price) * $item->quantity);
+    $subtotal = $total; // add this line
 
-        return view('cart.index', compact('items', 'total'));
-    }
+    return view('cart.index', compact('items', 'total', 'subtotal')); // add subtotal here
+}
 
     public function add(Request $request, Product $product)
     {

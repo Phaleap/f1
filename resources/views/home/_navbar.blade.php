@@ -54,6 +54,16 @@
                 </a>
             </li>
             <li>
+    <a href="{{ route('shop.car-request.my-requests') }}" class="nav-icon-link" title="My Car Requests">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+        </svg>
+        My Cars
+    </a>
+</li>
+            <li>
                 <a href="{{ route('profile.edit') }}" class="nav-btn-outline">
                     {{ Auth::user()->full_name ? explode(' ', Auth::user()->full_name)[0] : 'Account' }}
                 </a>
@@ -89,10 +99,11 @@
         <a href="{{ route('cart.index') }}" onclick="toggleMobileNav()"><span class="nm-num">04</span>Cart</a>
         @auth
             <a href="{{ route('orders.index') }}" onclick="toggleMobileNav()"><span class="nm-num">05</span>Orders</a>
-            <a href="{{ route('profile.edit') }}" onclick="toggleMobileNav()"><span class="nm-num">06</span>Account</a>
+            <a href="{{ route('shop.car-request.my-requests') }}" onclick="toggleMobileNav()"><span class="nm-num">06</span>My Cars</a>
+            <a href="{{ route('profile.edit') }}" onclick="toggleMobileNav()"><span class="nm-num">07</span>Account</a>
         @else
-            <a href="{{ route('login') }}" onclick="toggleMobileNav()"><span class="nm-num">07</span>Login</a>
-            <a href="{{ route('register') }}" onclick="toggleMobileNav()"><span class="nm-num">08</span>Register</a>
+            <a href="{{ route('login') }}" onclick="toggleMobileNav()"><span class="nm-num">08</span>Login</a>
+            <a href="{{ route('register') }}" onclick="toggleMobileNav()"><span class="nm-num">09</span>Register</a>
         @endauth
     </div>
 

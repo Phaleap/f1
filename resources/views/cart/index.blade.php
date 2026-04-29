@@ -191,7 +191,7 @@ body { background: var(--dark); color: var(--off-white); font-family: 'Barlow', 
                     </div>
                 </div>
                 <div class="summary-footer">
-                    <a href="#" class="btn-checkout">
+                    <a href="{{ route('checkout.index') }}" class="btn-checkout">
                         Proceed to Checkout
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                             <path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
