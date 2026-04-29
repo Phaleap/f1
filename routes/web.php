@@ -115,6 +115,11 @@ Route::middleware('auth')->group(function () {
     // Car Appointments  ← ADD HERE
     Route::get('/appointment/{requestId}', [AppointmentController::class, 'create'])->name('shop.appointment.create');
     Route::post('/appointment', [AppointmentController::class, 'store'])->name('shop.appointment.store');
+    
+
+    // Car Online Payment
+Route::get('/car-payment/{carRequest}', [CarPurchaseRequestController::class, 'payPage'])->name('shop.car-payment.show');
+Route::post('/car-payment/{carRequest}', [CarPurchaseRequestController::class, 'processPayment'])->name('shop.car-payment.process');
 });
 
 

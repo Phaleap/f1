@@ -156,7 +156,14 @@ body { background: var(--dark); }
     font-weight: 400;
 }
 
-.request-card-status { padding: 24px 28px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 12px; }
+.request-card-status {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+}
 
 .status-badge {
     display: inline-flex;
@@ -169,13 +176,12 @@ body { background: var(--dark); }
     font-family: 'Barlow', sans-serif;
     font-weight: 500;
 }
-.status-pending  { border: 1px solid rgba(234,179,8,0.3);  color: #eab308; background: rgba(234,179,8,0.05); }
-.status-approved { border: 1px solid rgba(34,197,94,0.3);  color: #22c55e; background: rgba(34,197,94,0.05); }
-.status-rejected { border: 1px solid rgba(225,6,0,0.3);    color: var(--red); background: rgba(225,6,0,0.05); }
-.status-cancelled{ border: 1px solid var(--border);         color: var(--muted); background: transparent; }
+.status-pending   { border: 1px solid rgba(234,179,8,0.3);  color: #eab308; background: rgba(234,179,8,0.05); }
+.status-approved  { border: 1px solid rgba(34,197,94,0.3);  color: #22c55e; background: rgba(34,197,94,0.05); }
+.status-rejected  { border: 1px solid rgba(225,6,0,0.3);    color: var(--red); background: rgba(225,6,0,0.05); }
+.status-cancelled { border: 1px solid var(--border);        color: var(--muted); background: transparent; }
 
 .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-
 .request-date { font-size: 0.58rem; letter-spacing: 2px; color: var(--muted); }
 
 .rejection-note {
@@ -185,22 +191,48 @@ body { background: var(--dark); }
     background: rgba(225,6,0,0.04);
 }
 .rejection-note-label { font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 4px; }
-.rejection-note-text { font-size: 0.78rem; color: var(--muted); }
+.rejection-note-text  { font-size: 0.78rem; color: var(--muted); }
 
-/* Order info block */
 .order-info {
     margin-top: 12px;
     padding: 12px 16px;
     border: 1px solid rgba(34,197,94,0.15);
     background: rgba(34,197,94,0.04);
 }
-.order-info-label { font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase; color: #22c55e; margin-bottom: 4px; }
+.order-info-label  { font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase; color: #22c55e; margin-bottom: 4px; }
 .order-info-status {
     font-family: 'Bebas Neue', cursive;
     font-size: 1rem;
     letter-spacing: 2px;
     color: var(--off-white);
 }
+
+.appointment-info {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border: 1px solid rgba(139,92,246,0.2);
+    background: rgba(139,92,246,0.05);
+}
+.appointment-info-label { font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase; color: #a78bfa; margin-bottom: 4px; }
+.appointment-info-val   { font-size: 0.78rem; color: var(--off-white); }
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background: var(--red);
+    color: white;
+    text-decoration: none;
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+.action-btn:hover { opacity: 0.85; }
 </style>
 
 <div class="requests-page">
@@ -220,6 +252,12 @@ body { background: var(--dark); }
         @if(session('success'))
         <div style="border:1px solid rgba(34,197,94,0.3);padding:16px 20px;margin-bottom:28px;background:rgba(34,197,94,0.05);color:#22c55e;font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;">
             ✓ {{ session('success') }}
+        </div>
+        @endif
+
+        @if(session('error'))
+        <div style="border:1px solid rgba(225,6,0,0.3);padding:16px 20px;margin-bottom:28px;background:rgba(225,6,0,0.05);color:var(--red);font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;">
+            ✕ {{ session('error') }}
         </div>
         @endif
 
@@ -244,24 +282,30 @@ body { background: var(--dark); }
 
         @foreach($requests as $req)
         @php
-            $accent = $req->product?->carModel?->team?->color ?? '#E10600';
-            $mainImg = $req->product?->images?->where('is_main', true)->first() ?? $req->product?->images?->first();
+            $accent  = $req->product?->carModel?->team?->color ?? '#E10600';
+            $mainImg = $req->product?->images?->where('is_main', true)->first()
+                    ?? $req->product?->images?->first();
         @endphp
+
         <div class="request-card">
             <div class="request-card-accent" style="background: {{ $accent }}"></div>
 
+            {{-- COL 1: IMAGE --}}
             <div class="request-card-img">
                 @if($mainImg)
-                    <img src="{{ asset('storage/' . $mainImg->image_url) }}" alt="{{ $req->product?->product_name }}">
+                    <img src="{{ asset('storage/' . $mainImg->image_url) }}"
+                         alt="{{ $req->product?->product_name }}">
                 @else
                     <div class="request-card-img-placeholder">
                         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                            <rect x="3" y="7" width="22" height="16" rx="2" stroke="white" stroke-opacity=".2" stroke-width="1.3"/>
+                            <rect x="3" y="7" width="22" height="16" rx="2"
+                                  stroke="white" stroke-opacity=".2" stroke-width="1.3"/>
                         </svg>
                     </div>
                 @endif
             </div>
 
+            {{-- COL 2: BODY --}}
             <div class="request-card-body">
                 <div class="request-card-label">{{ $req->product?->carModel?->team?->team_name ?? 'F1 Car' }}</div>
                 <div class="request-card-name">{{ $req->product?->product_name ?? 'Product' }}</div>
@@ -278,6 +322,7 @@ body { background: var(--dark); }
                     </div>
                 </div>
 
+                {{-- Rejection note --}}
                 @if($req->request_status === 'rejected' && $req->rejection_reason)
                 <div class="rejection-note">
                     <div class="rejection-note-label">Rejection Reason</div>
@@ -285,36 +330,54 @@ body { background: var(--dark); }
                 </div>
                 @endif
 
-               @if($req->request_status === 'approved' && $req->carOrder)
-<div class="order-info">
-    <div class="order-info-label">Car Order Created</div>
-    <div class="order-info-status">Order #{{ $req->carOrder->car_order_id }} — {{ ucfirst(str_replace('_', ' ', $req->carOrder->car_order_status)) }}</div>
-</div>
-@endif
+                {{-- Car order info --}}
+                @if($req->request_status === 'approved' && $req->carOrder)
+                <div class="order-info">
+                    <div class="order-info-label">Car Order Created</div>
+                    <div class="order-info-status">
+                        Order #{{ $req->carOrder->car_order_id }}
+                        — {{ ucfirst(str_replace('_', ' ', $req->carOrder->car_order_status)) }}
+                    </div>
+                </div>
+                @endif
 
-{{-- Book Appointment button for approved walk-in requests --}}
-@if($req->request_status === 'approved' && $req->payment_preference === 'walk_in')
-    @if($req->appointment)
-    <div style="margin-top:12px;padding:12px 16px;border:1px solid rgba(139,92,246,0.2);background:rgba(139,92,246,0.05);">
-        <div style="font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:#a78bfa;margin-bottom:4px;">Appointment Scheduled</div>
-        <div style="font-size:0.78rem;color:var(--off-white);">
-            {{ \Carbon\Carbon::parse($req->appointment->appointment_date)->format('l, d M Y') }}
-            — {{ \Carbon\Carbon::parse($req->appointment->appointment_date)->format('g:i A') }}
-        </div>
-    </div>
-    @else
-    <a href="{{ route('shop.appointment.create', $req->request_id) }}"
-       style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:10px 20px;background:var(--red);color:white;text-decoration:none;font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;font-family:'Barlow',sans-serif;font-weight:500;">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <rect x="1" y="2" width="10" height="9" rx="1" stroke="currentColor" stroke-width="1.2"/>
-            <path d="M4 1v2M8 1v2M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
-        Book Appointment
-    </a>
-    @endif
-@endif
-            </div>
+                {{-- Walk-in: appointment --}}
+                @if($req->request_status === 'approved' && $req->payment_preference === 'walk_in')
+                    @if($req->appointment)
+                    <div class="appointment-info">
+                        <div class="appointment-info-label">Appointment Scheduled</div>
+                        <div class="appointment-info-val">
+                            {{ \Carbon\Carbon::parse($req->appointment->appointment_date)->format('l, d M Y') }}
+                            — {{ \Carbon\Carbon::parse($req->appointment->appointment_date)->format('g:i A') }}
+                        </div>
+                    </div>
+                    @else
+                    <a href="{{ route('shop.appointment.create', $req->request_id) }}" class="action-btn">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <rect x="1" y="2" width="10" height="9" rx="1" stroke="currentColor" stroke-width="1.2"/>
+                            <path d="M4 1v2M8 1v2M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                        </svg>
+                        Book Appointment
+                    </a>
+                    @endif
+                @endif
 
+                {{-- Online: complete payment --}}
+                @if($req->request_status === 'approved'
+                    && $req->payment_preference === 'online'
+                    && $req->carOrder?->car_order_status === 'confirmed')
+                <a href="{{ route('shop.car-payment.show', $req->request_id) }}" class="action-btn">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <rect x="1" y="3" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/>
+                        <path d="M1 6h10" stroke="currentColor" stroke-width="1.2"/>
+                    </svg>
+                    Complete Payment
+                </a>
+                @endif
+
+            </div>{{-- end request-card-body --}}
+
+            {{-- COL 3: STATUS --}}
             <div class="request-card-status">
                 <div class="status-badge status-{{ $req->request_status }}">
                     <span class="status-dot"></span>
@@ -322,7 +385,8 @@ body { background: var(--dark); }
                 </div>
                 <div class="request-date">{{ $req->created_at->format('d M Y') }}</div>
             </div>
-        </div>
+
+        </div>{{-- end request-card --}}
         @endforeach
 
         @endif

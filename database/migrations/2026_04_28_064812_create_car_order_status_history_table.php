@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
 {
-    Schema::create('car_order_status_history', function (Blueprint $table) {
-        $table->id('history_id');
-        $table->unsignedBigInteger('car_order_id');
-        $table->string('status');
-        $table->unsignedBigInteger('changed_by');
-        $table->datetime('changed_at');
-        $table->string('remarks')->nullable();
+    Schema::create('car_order_status_histories', function (Blueprint $table) { // <- add 's'
+    $table->id('history_id');
+    $table->unsignedBigInteger('car_order_id');
+    $table->string('status');
+    $table->unsignedBigInteger('changed_by');
+    $table->datetime('changed_at');
+    $table->string('remarks')->nullable();
 
-       $table->foreign('car_order_id')->references('car_order_id')->on('car_orders');
-$table->foreign('changed_by')->references('id')->on('users');
-    });
+    $table->foreign('car_order_id')->references('car_order_id')->on('car_orders');
+    $table->foreign('changed_by')->references('id')->on('users');
+});
 }
 
 public function down(): void

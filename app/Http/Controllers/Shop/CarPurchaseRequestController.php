@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class CarPurchaseRequestController extends Controller
 {
     // Show request form
@@ -68,4 +69,64 @@ class CarPurchaseRequestController extends Controller
 
         return view('shop.car-request.my-requests', compact('requests'));
     }
+   public function payPage(CarPurchaseRequest $carRequest)
+{
+    // Guard checks
+    abort_if($carRequest->user_id !== Auth::id(), 403);
+    abort_if($carRequest->request_status !== 'approved', 403);  // ← request_status not status
+    abort_if($carRequest->payment_preference !== 'online', 403);
+
+    $carRequest->load([
+        'product.images',
+        'product.carModel.team',
+        'product.carModel.driver',
+        'carOrder',  // ← we need the car_order for payment
+    ]);
+
+    // Guard: car order must exist
+    abort_if(!$carRequest->carOrder, 404);
+
+    return view('shop.car-request.pay', compact('carRequest'));
+}
+
+public function processPayment(Request $request, CarPurchaseRequest $carRequest)
+{
+    abort_if($carRequest->user_id !== Auth::id(), 403);
+    abort_if($carRequest->request_status !== 'approved', 403);
+    abort_if($carRequest->payment_preference !== 'online', 403);
+
+    $carOrder = $carRequest->carOrder;
+    abort_if(!$carOrder, 404);
+
+    if ($carOrder->car_order_status === 'paid') {
+        return response()->json(['error' => 'Already paid.'], 400);
+    }
+
+    // Map method name to payment_method_id
+    $methodMap = ['card' => 1, 'bank' => 3, 'crypto' => null];
+    $paymentMethodId = $methodMap[$request->payment_method] ?? 1;
+
+    $txRef = 'TXN-' . strtoupper(substr(md5($carOrder->car_order_id . time()), 0, 10));
+
+    $carOrder->update([
+        'car_order_status'     => 'paid',
+        'payment_method_id'    => $paymentMethodId,
+        'transaction_code'     => $txRef,
+        'payment_confirmed_at' => now(),
+        'payment_notes'        => 'Paid online via ' . $request->payment_method,
+    ]);
+
+    \App\Models\CarOrderStatusHistory::create([
+        'car_order_id' => $carOrder->car_order_id,
+        'status'       => 'paid',
+        'changed_by'   => Auth::id(),
+        'changed_at'   => now(),
+        'remarks'      => 'Online payment completed. Ref: ' . $txRef,
+    ]);
+
+    return response()->json([
+        'success'         => true,
+        'transaction_ref' => $txRef,
+    ]);
+}
 }
