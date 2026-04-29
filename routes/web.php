@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Shop\CarPurchaseRequestController;
 use App\Http\Controllers\Admin\CarRequestController;
 use App\Http\Controllers\Admin\CarOrderController;
+use App\Http\Controllers\Shop\AppointmentController;
 
 
 Route::get('/', function () {
@@ -110,6 +111,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/car-request/{productId}', [CarPurchaseRequestController::class, 'create'])->name('shop.car-request.create');
     Route::post('/car-request', [CarPurchaseRequestController::class, 'store'])->name('shop.car-request.store');
     Route::get('/my-car-requests', [CarPurchaseRequestController::class, 'myRequests'])->name('shop.car-request.my-requests');
+
+    // Car Appointments  ← ADD HERE
+    Route::get('/appointment/{requestId}', [AppointmentController::class, 'create'])->name('shop.appointment.create');
+    Route::post('/appointment', [AppointmentController::class, 'store'])->name('shop.appointment.store');
 });
 
 
@@ -156,6 +161,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('car-orders/{id}', [CarOrderController::class, 'show'])->name('car-orders.show');
     Route::post('car-orders/{id}/confirm-payment', [CarOrderController::class, 'confirmWalkInPayment'])->name('car-orders.confirm-payment');
     Route::post('car-orders/{id}/status', [CarOrderController::class, 'updateStatus'])->name('car-orders.update-status');
+
+    Route::post('car-requests/{id}/confirm-appointment', [CarRequestController::class, 'confirmAppointment'])->name('car-requests.confirm-appointment');
 });
 
 

@@ -93,4 +93,19 @@ class CarRequestController extends Controller
         return redirect()->route('admin.car-requests.index')
             ->with('success', 'Request rejected.');
     }
+    public function confirmAppointment($id)
+{
+    $carRequest = CarPurchaseRequest::with('appointment')->findOrFail($id);
+
+    if ($carRequest->appointment) {
+        $carRequest->appointment->update([
+            'appointment_status' => 'confirmed',
+            'confirmed_by'       => Auth::id(),
+            'confirmed_at'       => now(),
+        ]);
+    }
+
+    return redirect()->route('admin.car-requests.show', $id)
+        ->with('success', 'Appointment confirmed.');
+}
 }

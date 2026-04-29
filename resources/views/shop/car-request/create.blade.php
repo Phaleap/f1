@@ -322,7 +322,13 @@ textarea.field-input { resize: vertical; min-height: 100px; }
             <p class="form-subtitle">
                 Fill in your details below. Our team will review your request and get back to you within 24 hours.
             </p>
-
+            @if(session('error'))
+<div style="border:1px solid rgba(225,6,0,0.3);padding:16px 20px;margin-bottom:28px;background:rgba(225,6,0,0.05);">
+    <div style="font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--red);">
+        ✕ {{ session('error') }}
+    </div>
+</div>
+@endif
             @if($errors->any())
             <div style="border:1px solid var(--red);padding:16px 20px;margin-bottom:28px;background:rgba(225,6,0,0.05);">
                 <div style="font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Please fix the following</div>

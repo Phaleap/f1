@@ -101,7 +101,59 @@
                 </div>
             </div>
         </div>
+{{-- Appointment (if exists) --}}
+@if($carRequest->appointment)
+<div class="card" style="border-color:#e9d5ff;">
+    <div class="card-header" style="background:#faf5ff;">
+        <div class="card-title" style="color:#7c3aed;">Showroom Appointment</div>
+    </div>
+    <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+            <div>
+                <div style="font-size:0.72rem;color:var(--gray-400);margin-bottom:4px;">Date & Time</div>
+                <div style="font-weight:600;color:var(--gray-900);">
+                    {{ \Carbon\Carbon::parse($carRequest->appointment->appointment_date)->format('l, d M Y') }}
+                </div>
+                <div style="font-size:0.82rem;color:var(--gray-500);">
+                    {{ \Carbon\Carbon::parse($carRequest->appointment->appointment_date)->format('g:i A') }}
+                </div>
+            </div>
+            <div>
+                <div style="font-size:0.72rem;color:var(--gray-400);margin-bottom:4px;">Location</div>
+                <div style="font-weight:500;color:var(--gray-900);">{{ $carRequest->appointment->location }}</div>
+            </div>
+            <div>
+                <div style="font-size:0.72rem;color:var(--gray-400);margin-bottom:4px;">Status</div>
+                @php
+                    $apptBadge = match($carRequest->appointment->appointment_status) {
+                        'scheduled'  => 'badge-yellow',
+                        'confirmed'  => 'badge-blue',
+                        'completed'  => 'badge-green',
+                        'cancelled'  => 'badge-red',
+                        'no_show'    => 'badge-red',
+                        default      => 'badge-gray',
+                    };
+                @endphp
+                <span class="badge {{ $apptBadge }}">
+                    {{ ucfirst($carRequest->appointment->appointment_status) }}
+                </span>
+            </div>
+        </div>
 
+        {{-- Admin confirm appointment --}}
+        @if($carRequest->appointment->appointment_status === 'scheduled')
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--gray-200);">
+            <form method="POST" action="{{ route('admin.car-requests.confirm-appointment', $carRequest->request_id) }}">
+                @csrf
+                <button type="submit" class="btn btn-sm" style="background:#7c3aed;color:white;border-color:#7c3aed;">
+                    Confirm Appointment
+                </button>
+            </form>
+        </div>
+        @endif
+    </div>
+</div>
+@endif
         {{-- Car Order (if exists) --}}
         @if($carRequest->carOrder)
         <div class="card" style="border-color:#bbf7d0;">

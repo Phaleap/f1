@@ -285,12 +285,34 @@ body { background: var(--dark); }
                 </div>
                 @endif
 
-                @if($req->request_status === 'approved' && $req->carOrder)
-                <div class="order-info">
-                    <div class="order-info-label">Car Order Created</div>
-                    <div class="order-info-status">Order #{{ $req->carOrder->car_order_id }} — {{ ucfirst(str_replace('_', ' ', $req->carOrder->car_order_status)) }}</div>
-                </div>
-                @endif
+               @if($req->request_status === 'approved' && $req->carOrder)
+<div class="order-info">
+    <div class="order-info-label">Car Order Created</div>
+    <div class="order-info-status">Order #{{ $req->carOrder->car_order_id }} — {{ ucfirst(str_replace('_', ' ', $req->carOrder->car_order_status)) }}</div>
+</div>
+@endif
+
+{{-- Book Appointment button for approved walk-in requests --}}
+@if($req->request_status === 'approved' && $req->payment_preference === 'walk_in')
+    @if($req->appointment)
+    <div style="margin-top:12px;padding:12px 16px;border:1px solid rgba(139,92,246,0.2);background:rgba(139,92,246,0.05);">
+        <div style="font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:#a78bfa;margin-bottom:4px;">Appointment Scheduled</div>
+        <div style="font-size:0.78rem;color:var(--off-white);">
+            {{ \Carbon\Carbon::parse($req->appointment->appointment_date)->format('l, d M Y') }}
+            — {{ \Carbon\Carbon::parse($req->appointment->appointment_date)->format('g:i A') }}
+        </div>
+    </div>
+    @else
+    <a href="{{ route('shop.appointment.create', $req->request_id) }}"
+       style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:10px 20px;background:var(--red);color:white;text-decoration:none;font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;font-family:'Barlow',sans-serif;font-weight:500;">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <rect x="1" y="2" width="10" height="9" rx="1" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M4 1v2M8 1v2M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        Book Appointment
+    </a>
+    @endif
+@endif
             </div>
 
             <div class="request-card-status">
