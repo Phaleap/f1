@@ -140,13 +140,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Inventory
     Route::get('inventory', [AdminInventoryController::class, 'index'])->name('inventory.index');
-    Route::post('inventory/{inventory}/adjust', [AdminInventoryController::class, 'adjust'])->name('inventory.adjust');
-    Route::get('inventory/low-stock', [AdminInventoryController::class, 'lowStock'])->name('inventory.low-stock');
+Route::get('inventory/low-stock', [AdminInventoryController::class, 'lowStock'])->name('inventory.low-stock'); // ← must be before adjust
+Route::post('inventory/{inventory}/adjust', [AdminInventoryController::class, 'adjust'])->name('inventory.adjust');
 
     // Users
     Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('users/{user}', [AdminUserController::class, 'show'])->name('users.show');
-    Route::post('users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+    Route::patch('users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
 
     // Teams, Drivers, Car Models, Categories, Brands
     Route::resource('teams', TeamController::class);
@@ -168,6 +168,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('car-orders/{id}/status', [CarOrderController::class, 'updateStatus'])->name('car-orders.update-status');
 
     Route::post('car-requests/{id}/confirm-appointment', [CarRequestController::class, 'confirmAppointment'])->name('car-requests.confirm-appointment');
+
 });
 
 

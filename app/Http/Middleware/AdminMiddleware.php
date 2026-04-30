@@ -10,7 +10,7 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->role->role_name !== 'admin') {
+        if (!auth()->check() || auth()->user()->role?->role_name !== 'admin') {
             abort(403, 'Unauthorized');
         }
 

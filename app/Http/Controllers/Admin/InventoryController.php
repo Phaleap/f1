@@ -52,6 +52,6 @@ class InventoryController extends Controller
             ->whereColumn('stock_quantity', '<=', 'minimum_stock')
             ->get();
 
-        return view('admin.inventory.low-stock', compact('inventory'));
+        return view('admin.inventory.low_stock', compact('inventory'));
     }
 }
