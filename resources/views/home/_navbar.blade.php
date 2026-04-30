@@ -63,11 +63,19 @@
         My Cars
     </a>
 </li>
-            <li>
-                <a href="{{ route('profile.edit') }}" class="nav-btn-outline">
-                    {{ Auth::user()->full_name ? explode(' ', Auth::user()->full_name)[0] : 'Account' }}
-                </a>
-            </li>
+           <li>
+    <a href="{{ route('profile.edit') }}" class="nav-btn-outline">
+        {{ Auth::user()->full_name ? explode(' ', Auth::user()->full_name)[0] : 'Account' }}
+    </a>
+</li>
+<li>
+    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+        @csrf
+        <button type="submit" class="nav-btn-outline" style="cursor:pointer;background:transparent;border:1px solid rgba(240,237,232,0.15);color:rgba(240,237,232,0.6);font-family:'Barlow',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:7px 18px;">
+            Logout
+        </button>
+    </form>
+</li>
         @else
             <li><a href="{{ route('login') }}" class="nav-btn-outline">Login</a></li>
             <li><a href="{{ route('register') }}" class="nav-btn-primary">Register</a></li>
@@ -101,6 +109,12 @@
             <a href="{{ route('orders.index') }}" onclick="toggleMobileNav()"><span class="nm-num">05</span>Orders</a>
             <a href="{{ route('shop.car-request.my-requests') }}" onclick="toggleMobileNav()"><span class="nm-num">06</span>My Cars</a>
             <a href="{{ route('profile.edit') }}" onclick="toggleMobileNav()"><span class="nm-num">07</span>Account</a>
+            <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+    @csrf
+    <button type="submit" onclick="toggleMobileNav()" style="background:none;border:none;font-family:'Bebas Neue',cursive;font-size:clamp(2.2rem,7vw,3.5rem);letter-spacing:6px;color:rgba(240,237,232,0.25);cursor:pointer;padding:8px 0;width:100%;text-align:left;border-bottom:1px solid rgba(255,255,255,0.03);">
+        <span class="nm-num">08</span>Logout
+    </button>
+</form>
         @else
             <a href="{{ route('login') }}" onclick="toggleMobileNav()"><span class="nm-num">08</span>Login</a>
             <a href="{{ route('register') }}" onclick="toggleMobileNav()"><span class="nm-num">09</span>Register</a>

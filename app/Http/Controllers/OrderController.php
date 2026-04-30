@@ -13,10 +13,14 @@ class OrderController extends Controller
     }
 
     public function index()
-    {
-        $orders = $this->authUser()->orders()->latest()->get();
-        return view('orders.index', compact('orders'));
-    }
+{
+    $orders = $this->authUser()
+        ->orders()
+        ->with('items')  // ← load items count
+        ->latest()
+        ->get();
+    return view('orders.index', compact('orders'));
+}
 
     public function show(Order $order)
     {
@@ -27,4 +31,5 @@ class OrderController extends Controller
         $items = $order->items()->with('product')->get();
         return view('orders.show', compact('order', 'items'));
     }
+    
 }
