@@ -85,8 +85,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
     // Orders
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
     // Wishlist
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
@@ -135,8 +135,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Orders
     Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
-    Route::post('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
-    Route::post('orders/{order}/shipment', [AdminOrderController::class, 'addShipment'])->name('orders.shipment');
+Route::post('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+Route::post('orders/{order}/shipment', [AdminOrderController::class, 'addShipment'])->name('orders.shipment');
 
     // Inventory
     Route::get('inventory', [AdminInventoryController::class, 'index'])->name('inventory.index');

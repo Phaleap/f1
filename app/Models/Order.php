@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+
     protected $fillable = [
         'user_id',
         'address_id',
@@ -39,8 +40,23 @@ class Order extends Model
         return $this->belongsTo(ShippingMethod::class, 'shipping_method_id', 'shipping_method_id');
     }
 
-    public function statusHistories()
+    public function statusHistory()
     {
         return $this->hasMany(OrderStatusHistory::class);
     }
+    public function payment()
+{
+    return $this->hasOne(Payment::class, 'order_id', 'order_id');
+}
+
+public function shipment()
+{
+    return $this->hasOne(Shipment::class, 'order_id', 'order_id');
+}
+
+public function coupons()
+{
+    return $this->hasMany(OrderCoupon::class, 'order_id', 'order_id');
+}
+
 }

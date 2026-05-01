@@ -23,13 +23,14 @@ class OrderController extends Controller
 }
 
     public function show(Order $order)
-    {
-        if ($order->user_id !== $this->authUser()->id) {
-            abort(403);
-        }
-
-        $items = $order->items()->with('product')->get();
-        return view('orders.show', compact('order', 'items'));
+{
+    if ($order->user_id !== $this->authUser()->id) {
+        abort(403);
     }
+
+    $order->load(['address', 'shippingMethod', 'shipment']);
+    $items = $order->items()->with(['product', 'variant'])->get();
+    return view('orders.show', compact('order', 'items'));
+}
     
 }
