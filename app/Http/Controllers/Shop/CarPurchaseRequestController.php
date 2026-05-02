@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use App\Models\CarPurchaseRequest;
 use App\Models\Product;
+use App\Services\TelegramService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,6 @@ class CarPurchaseRequestController extends Controller
     {
         $product = Product::findOrFail($productId);
 
-        // Block if not a car product
         if (!$product->isCarProduct()) {
             abort(403, 'This product does not require a purchase request.');
         }
@@ -35,7 +35,6 @@ class CarPurchaseRequestController extends Controller
             'payment_preference' => 'required|in:online,walk_in',
         ]);
 
-        // Check if user already has a pending request for this car
         $existing = CarPurchaseRequest::where('user_id', Auth::id())
             ->where('product_id', $request->product_id)
             ->whereIn('request_status', ['pending', 'approved'])
@@ -45,7 +44,9 @@ class CarPurchaseRequestController extends Controller
             return back()->with('error', 'You already have an active request for this car.');
         }
 
-        CarPurchaseRequest::create([
+        $product = Product::findOrFail($request->product_id);
+
+        $carRequest = CarPurchaseRequest::create([
             'user_id'            => Auth::id(),
             'product_id'         => $request->product_id,
             'full_name'          => $request->full_name,
@@ -54,6 +55,22 @@ class CarPurchaseRequestController extends Controller
             'payment_preference' => $request->payment_preference,
             'request_status'     => 'pending',
         ]);
+
+        // Notify admin
+        try {
+            $telegram = new TelegramService();
+            $telegram->notifyAdmin(
+                "🏎 <b>New Car Purchase Request</b>\n\n" .
+                "👤 Customer: {$request->full_name}\n" .
+                "📞 Phone: {$request->phone}\n" .
+                "🚗 Car: {$product->product_name}\n" .
+                "💳 Payment: " . ucfirst(str_replace('_', ' ', $request->payment_preference)) . "\n" .
+                "📋 Request ID: #{$carRequest->request_id}\n\n" .
+                "👉 Review at: " . url('/admin/car-requests/' . $carRequest->request_id)
+            );
+        } catch (\Exception $e) {
+            // Silently fail — don't block the user
+        }
 
         return redirect()->route('shop.car-request.my-requests')
             ->with('success', 'Your request has been submitted! We will review it shortly.');
@@ -69,64 +86,78 @@ class CarPurchaseRequestController extends Controller
 
         return view('shop.car-request.my-requests', compact('requests'));
     }
-   public function payPage(CarPurchaseRequest $carRequest)
-{
-    // Guard checks
-    abort_if($carRequest->user_id !== Auth::id(), 403);
-    abort_if($carRequest->request_status !== 'approved', 403);  // ← request_status not status
-    abort_if($carRequest->payment_preference !== 'online', 403);
 
-    $carRequest->load([
-        'product.images',
-        'product.carModel.team',
-        'product.carModel.driver',
-        'carOrder',  // ← we need the car_order for payment
-    ]);
+    public function payPage(CarPurchaseRequest $carRequest)
+    {
+        abort_if($carRequest->user_id !== Auth::id(), 403);
+        abort_if($carRequest->request_status !== 'approved', 403);
+        abort_if($carRequest->payment_preference !== 'online', 403);
 
-    // Guard: car order must exist
-    abort_if(!$carRequest->carOrder, 404);
+        $carRequest->load([
+            'product.images',
+            'product.carModel.team',
+            'product.carModel.driver',
+            'carOrder',
+        ]);
 
-    return view('shop.car-request.pay', compact('carRequest'));
-}
+        abort_if(!$carRequest->carOrder, 404);
 
-public function processPayment(Request $request, CarPurchaseRequest $carRequest)
-{
-    abort_if($carRequest->user_id !== Auth::id(), 403);
-    abort_if($carRequest->request_status !== 'approved', 403);
-    abort_if($carRequest->payment_preference !== 'online', 403);
-
-    $carOrder = $carRequest->carOrder;
-    abort_if(!$carOrder, 404);
-
-    if ($carOrder->car_order_status === 'paid') {
-        return response()->json(['error' => 'Already paid.'], 400);
+        return view('shop.car-request.pay', compact('carRequest'));
     }
 
-    // Map method name to payment_method_id
-    $methodMap = ['card' => 1, 'bank' => 3, 'crypto' => null];
-    $paymentMethodId = $methodMap[$request->payment_method] ?? 1;
+    public function processPayment(Request $request, CarPurchaseRequest $carRequest)
+    {
+        abort_if($carRequest->user_id !== Auth::id(), 403);
+        abort_if($carRequest->request_status !== 'approved', 403);
+        abort_if($carRequest->payment_preference !== 'online', 403);
 
-    $txRef = 'TXN-' . strtoupper(substr(md5($carOrder->car_order_id . time()), 0, 10));
+        $carOrder = $carRequest->carOrder;
+        abort_if(!$carOrder, 404);
 
-    $carOrder->update([
-        'car_order_status'     => 'paid',
-        'payment_method_id'    => $paymentMethodId,
-        'transaction_code'     => $txRef,
-        'payment_confirmed_at' => now(),
-        'payment_notes'        => 'Paid online via ' . $request->payment_method,
-    ]);
+        if ($carOrder->car_order_status === 'paid') {
+            return response()->json(['error' => 'Already paid.'], 400);
+        }
 
-    \App\Models\CarOrderStatusHistory::create([
-        'car_order_id' => $carOrder->car_order_id,
-        'status'       => 'paid',
-        'changed_by'   => Auth::id(),
-        'changed_at'   => now(),
-        'remarks'      => 'Online payment completed. Ref: ' . $txRef,
-    ]);
+        $methodMap = ['card' => 1, 'bank' => 3, 'crypto' => null];
+        $paymentMethodId = $methodMap[$request->payment_method] ?? 1;
 
-    return response()->json([
-        'success'         => true,
-        'transaction_ref' => $txRef,
-    ]);
-}
+        $txRef = 'TXN-' . strtoupper(substr(md5($carOrder->car_order_id . time()), 0, 10));
+
+        $carOrder->update([
+            'car_order_status'     => 'paid',
+            'payment_method_id'    => $paymentMethodId,
+            'transaction_code'     => $txRef,
+            'payment_confirmed_at' => now(),
+            'payment_notes'        => 'Paid online via ' . $request->payment_method,
+        ]);
+
+        \App\Models\CarOrderStatusHistory::create([
+            'car_order_id' => $carOrder->car_order_id,
+            'status'       => 'paid',
+            'changed_by'   => Auth::id(),
+            'changed_at'   => now(),
+            'remarks'      => 'Online payment completed. Ref: ' . $txRef,
+        ]);
+
+        // Notify admin of payment
+        try {
+            $telegram = new TelegramService();
+            $carRequest->load('product');
+            $telegram->notifyAdmin(
+                "💰 <b>Car Payment Received</b>\n\n" .
+                "👤 Customer: {$carRequest->full_name}\n" .
+                "🚗 Car: {$carRequest->product->product_name}\n" .
+                "💳 Method: " . ucfirst($request->payment_method) . "\n" .
+                "🔖 Ref: {$txRef}\n\n" .
+                "👉 View at: " . url('/admin/car-orders/' . $carOrder->car_order_id)
+            );
+        } catch (\Exception $e) {
+            // Silently fail
+        }
+
+        return response()->json([
+            'success'         => true,
+            'transaction_ref' => $txRef,
+        ]);
+    }
 }
