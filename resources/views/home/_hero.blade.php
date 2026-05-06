@@ -1,13 +1,13 @@
     {{-- ── HERO ── --}}
     <section id="hero">
         <video autoplay muted loop playsinline id="hero-video" poster="/images/fallback.jpg">
-            <source src="{{ asset('F1.mp4') }}" type="video/mp4">
+            <source src="{{ asset('build/assets/F1.mp4') }}" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
         <div class="hero-red-bar"></div>
 
         <div class="hero-content">
-            <p class="hero-eyebrow">Formula One — 2024 Collection</p>
+            <p class="hero-eyebrow">Formula One — 2026 Collection</p>
             <h1 class="hero-title">
                 <span class="line-1">Own The</span>
                 <span class="line-2">Race</span>

@@ -329,7 +329,7 @@ nav#navbar.scrolled { height: 56px; }
    MOBILE FULLSCREEN OVERLAY
 ══════════════════════════════════════════════════════ */
 .nav-mobile {
-    display: none;
+    display: flex;
     position: fixed;
     inset: 0;
     background: rgba(5,5,5,0.98);
@@ -345,7 +345,6 @@ nav#navbar.scrolled { height: 56px; }
     transition: opacity 0.35s ease;
 }
 .nav-mobile.open {
-    display: flex;
     opacity: 1;
     pointer-events: all;
 }
@@ -458,6 +457,10 @@ nav#navbar.scrolled { height: 56px; }
 @media (max-width: 1024px) { nav#navbar { padding: 0 32px; } }
 
 @media (max-width: 768px) {
+    .announcement-bar,   /* adjust to your actual class */
+    .ticker-wrap {
+        display: none;
+    }
     nav#navbar {
         top: 0;
         padding: 0 24px;

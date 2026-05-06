@@ -303,7 +303,7 @@
                     <div class="fh-os"><span class="fh-os-val">20</span><span class="fh-os-key">Teams</span></div>
                     <div class="fh-os"><span class="fh-os-val">∞</span><span class="fh-os-key">Passion</span></div>
                 </div>
-                <a href="#" class="btn-primary" style="display:inline-block;margin-top:48px;">SHOP THE COLLECTION</a>
+                
             </div>
             <div class="fh-outro-watermark">F1</div>
         </div>

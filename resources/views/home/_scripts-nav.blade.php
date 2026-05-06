@@ -36,36 +36,86 @@
     });
 
     /* ── Music ── */
-    let musicStarted = false;
+let musicStarted = false;
 
-    function startMusic() {
-        const music   = document.getElementById('bg-music');
-        const hansImg = document.getElementById('hans-img');
-        if (!musicStarted && music) {
-            music.volume = 0.35;
-            music.play().catch(() => {});
-            musicStarted = true;
-            hansImg.classList.add('playing');
-        }
+function startMusic() {
+    const music   = document.getElementById('bg-music');
+    const hansImg = document.getElementById('hans-img');
+    if (!musicStarted && music) {
+        music.volume = 0.35;
+        music.play().catch(() => {});
+        musicStarted = true;
+        hansImg.classList.add('playing');
     }
+}
 
-    function toggleMute() {
-        const music   = document.getElementById('bg-music');
-        const iconOn  = document.getElementById('icon-unmute');
-        const iconOff = document.getElementById('icon-mute');
-        const hansImg = document.getElementById('hans-img');
+function togglePlayPause() {
+    const music     = document.getElementById('bg-music');
+    const card      = document.getElementById('music-card');
+    const iconPlay  = document.getElementById('icon-play');
+    const iconPause = document.getElementById('icon-pause');
+
+    if (!musicStarted) {
         startMusic();
-        music.muted = !music.muted;
-        iconOn.style.display  = music.muted ? 'none'  : 'block';
-        iconOff.style.display = music.muted ? 'block' : 'none';
-        music.muted
-            ? hansImg.classList.remove('playing')
-            : hansImg.classList.add('playing');
-        document.getElementById('mute-btn').style.borderColor = music.muted
-            ? 'rgba(225,6,0,0.5)'
-            : '';
+        return;
     }
 
-    document.addEventListener('click',  startMusic, { once: true });
-    document.addEventListener('scroll', startMusic, { once: true });
+    if (music.paused) {
+        music.play().catch(() => {});
+        card.classList.remove('paused');
+        iconPlay.style.display  = 'none';
+        iconPause.style.display = 'block';
+    } else {
+        music.pause();
+        card.classList.add('paused');
+        iconPlay.style.display  = 'block';
+        iconPause.style.display = 'none';
+    }
+}
+
+function toggleMute() {
+    const music   = document.getElementById('bg-music');
+    const card    = document.getElementById('music-card');
+    const iconOn  = document.getElementById('icon-unmute');
+    const iconOff = document.getElementById('icon-mute');
+    startMusic();
+
+    music.muted = !music.muted;
+    iconOn.style.display  = music.muted ? 'none'  : 'block';
+    iconOff.style.display = music.muted ? 'block' : 'none';
+    music.muted
+        ? card.classList.add('muted')
+        : card.classList.remove('muted');
+}
+
+document.addEventListener('click',  startMusic, { once: true });
+document.addEventListener('scroll', startMusic, { once: true });
+
+/* ── Hide/show card on scroll direction ── */
+let lastScrollY = window.scrollY;
+let scrollTimer = null;
+
+window.addEventListener('scroll', () => {
+    const card = document.getElementById('music-card');
+    const currentScrollY = window.scrollY;
+
+    // Clear any pending timer
+    clearTimeout(scrollTimer);
+
+    if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        // Scrolling down → hide
+        card.classList.add('hidden');
+    } else {
+        // Scrolling up OR near top → show
+        card.classList.remove('hidden');
+    }
+
+    lastScrollY = currentScrollY;
+
+    // Always show again after user stops scrolling for 1.5s
+    scrollTimer = setTimeout(() => {
+        card.classList.remove('hidden');
+    }, 1500);
+}, { passive: true 
+});
 </script>

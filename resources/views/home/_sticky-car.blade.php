@@ -12,7 +12,7 @@
             <div class="corner-bracket cb-br" id="cb-br"></div>
 
             {{-- HUD specs --}}
-            <div class="hud">
+            {{-- <div class="hud">
                 <div class="hud-row">
                     <div class="hud-panel" id="spec-1">
                         <div class="hud-label">Power Output</div>
@@ -29,7 +29,7 @@
                         <div class="hud-value" style="font-size:1.8rem">Honda RBPTH002</div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- Speed Counter --}}
             <div id="hud-speed-wrap">

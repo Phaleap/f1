@@ -808,73 +808,167 @@
             margin-right: 2px;
         }
 
+#music-card {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(10, 10, 10, 0.96);
+    border: 1px solid rgba(225, 6, 0, 0.3);
+    padding: 14px 14px 14px 14px;
+    border-radius: 4px;
+    width: 310px;
+    box-sizing: border-box;
+    animation: fadeUp 1s ease 1.5s both;
+    transition: border-color 0.3s, box-shadow 0.3s, opacity 0.4s ease, transform 0.4s ease;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    
+}
+
+#music-card {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(10, 10, 10, 0.96);
+    border: 1px solid rgba(225, 6, 0, 0.3);
+    padding: 14px 14px 14px 14px;
+    border-radius: 4px;
+    width: 310px;
+    box-sizing: border-box;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: border-color 0.3s, box-shadow 0.3s, opacity 0.4s ease, transform 0.4s ease;
+}
+
+#music-card.card-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+#music-card.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+#music-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(225,6,0,0.7), transparent);
+}
+#music-card:hover {
+    border-color: rgba(225, 6, 0, 0.6);
+    box-shadow: 0 8px 40px rgba(225,6,0,0.12);
+}
+
+/* Image wrap + EQ bars */
+.img-wrap { position: relative; flex-shrink: 0; }
+#hans-img {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid rgba(225, 6, 0, 0.5);
+    display: block;
+    transition: filter 0.3s;
+}
+.music-eq {
+    position: absolute;
+    bottom: -2px; right: -2px;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5px;
+    background: rgba(10,10,10,0.92);
+    border: 1px solid rgba(225,6,0,0.3);
+    border-radius: 2px;
+    padding: 3px 4px;
+}
+.music-eq span {
+    width: 2.5px;
+    background: #e10600;
+    border-radius: 1px;
+    animation: eq-bar 0.8s ease-in-out infinite alternate;
+}
+.music-eq span:nth-child(1){ height:6px; animation-delay:0s; }
+.music-eq span:nth-child(2){ height:10px; animation-delay:0.15s; }
+.music-eq span:nth-child(3){ height:7px; animation-delay:0.3s; }
+.music-eq span:nth-child(4){ height:12px; animation-delay:0.1s; }
+.music-eq span:nth-child(5){ height:5px; animation-delay:0.25s; }
+@keyframes eq-bar {
+    from { transform: scaleY(0.3); opacity: 0.5; }
+    to   { transform: scaleY(1);   opacity: 1; }
+}
+
+/* Info */
+#music-info { flex: 1; min-width: 0; }
+#music-label { font-size: 0.55rem; letter-spacing: 4px; color: var(--red); text-transform: uppercase; display: block; margin-bottom: 3px; }
+#music-name  { font-family: 'Bebas Neue', cursive; font-size: 1.05rem; letter-spacing: 2px; color: #f0ede8; display: block; line-height: 1.2; }
+#music-track { font-size: 0.58rem; letter-spacing: 1.5px; color: rgba(240,237,232,0.4); text-transform: uppercase; display: block; margin-top: 3px; }
+
+/* Progress bar */
+.music-progress {
+    margin-top: 8px;
+    height: 1.5px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.music-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #e10600, #ff4433);
+    border-radius: 2px;
+    animation: prog 18s linear infinite;
+}
+@keyframes prog { from{width:0%} to{width:100%} }
+
+/* Controls group */
+.music-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* Shared button style */
+.music-controls button {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(240,237,232,0.55);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    flex-shrink: 0;
+}
+.music-controls button:hover {
+    border-color: var(--red);
+    color: var(--red);
+    background: rgba(225,6,0,0.06);
+}
+.music-controls button svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* Muted / paused states */
+#music-card.muted .music-eq span { background: rgba(255,255,255,0.15); animation: none; height: 4px !important; }
+#music-card.paused .music-eq span { background: rgba(255,255,255,0.15); animation: none; height: 4px !important; }
+#music-card.muted #hans-img,
+#music-card.paused #hans-img { filter: grayscale(80%); }
+#music-card.paused .music-progress-fill { animation-play-state: paused; }
 
 
-        /* ─────────────────────────────────────────
-           MUSIC CARD
-        ───────────────────────────────────────── */
-        #music-card {
-            position: fixed;
-            bottom: 32px;
-            right: 32px;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            background: rgba(10,10,10,0.88);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(225,6,0,0.25);  /* was 0.15 */
-            padding: 14px 18px;
-            border-radius: 2px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.6), 0 0 20px rgba(225,6,0,0.06);
-            animation: fadeUp 1s ease 1.5s both;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        #music-card:hover {
-            border-color: rgba(225,6,0,0.5);
-            box-shadow: 0 0 40px rgba(0,0,0,0.6), 0 0 30px rgba(225,6,0,0.15);
-        }
-        #hans-img {
-            width: 44px; height: 44px;             /* was 40px */
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1.5px solid rgba(225,6,0,0.5); /* was 1px 0.35 */
-            filter: grayscale(10%);
-        }
-        #music-label { font-size: 0.58rem; letter-spacing: 5px; color: var(--red); text-transform: uppercase; }
-        #music-name  { font-family: 'Bebas Neue', cursive; font-size: 1.2rem; letter-spacing: 3px; line-height: 1; } /* was 1rem */
-        #music-track { font-size: 0.62rem; letter-spacing: 2px; color: rgba(240,237,232,0.45); text-transform: uppercase; } /* was 0.28 */
-        #mute-btn {
-            background: none;
-            border: 1px solid rgba(255,255,255,0.14);
-            color: rgba(240,237,232,0.6);           /* was 0.4 */
-            cursor: pointer;
-            padding: 9px;
-            border-radius: 1px;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s;
-            flex-shrink: 0;
-        }
-        #mute-btn:hover { border-color: var(--red); color: var(--red); }
-        #mute-btn svg { width: 16px; height: 16px; } /* was 14px */
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-        }
-        #hans-img.playing { animation: spin 8s linear infinite; }
-
-        /* ─────────────────────────────────────────
-           VIGNETTE
-        ───────────────────────────────────────── */
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.4) 100%); /* softer than before */
-            z-index: 9998;
-        }
 
         /* ─────────────────────────────────────────
            RESPONSIVE
@@ -919,7 +1013,7 @@
     @include('home._footer')
 
     <audio id="bg-music" loop>
-        <source src="{{ asset('assets/F1.mp3') }}" type="audio/mp3">
+        <source src="{{ asset('build/assets/F1.mp3') }}" type="audio/mp3">
     </audio>
     @include('home._music-card')
 
