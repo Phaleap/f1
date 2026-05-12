@@ -8,23 +8,28 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = User::with('role')->latest();
+   public function index(Request $request)
+{
+    $query = User::with('role')
+        ->whereHas('role', fn($q) => $q->where('role_name', 'customer'))
+        ->orWhereNull('role_id') // users with no role assigned
+        ->latest();
 
-        if ($request->filled('search')) {
-            $query->where('full_name', 'like', '%' . $request->search . '%')
-                  ->orWhere('email', 'like', '%' . $request->search . '%');
-        }
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $users = $query->paginate(20)->withQueryString();
-
-        return view('admin.users.index', compact('users'));
+    if ($request->filled('search')) {
+        $query->where(function($q) use ($request) {
+            $q->where('full_name', 'like', '%' . $request->search . '%')
+              ->orWhere('email', 'like', '%' . $request->search . '%');
+        });
     }
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    $users = $query->paginate(20)->withQueryString();
+
+    return view('admin.users.index', compact('users'));
+}
 
     public function show(User $user)
     {

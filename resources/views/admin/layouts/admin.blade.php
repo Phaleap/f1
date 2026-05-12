@@ -1,3 +1,4 @@
+@use('Illuminate\Support\Facades\Auth')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -471,10 +472,14 @@ input[type="color"] { height: 38px; padding: 2px 6px; cursor: pointer; }
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
             Inventory
         </a>
-        <a href="{{ route('admin.users.index') }}" class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-            Users
-        </a>
+        <a href="{{ route('admin.admins.index') }}" class="nav-item {{ request()->routeIs('admin.admins.*') ? 'active' : '' }}">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>
+    Admins
+</a>
+<a href="{{ route('admin.users.index') }}" class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+    Customers
+</a>
         <a href="{{ route('admin.car-requests.index') }}" class="nav-item {{ request()->routeIs('admin.car-requests.*') ? 'active' : '' }}">
     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/><path d="M12 12h.01M12 16h.01"/></svg>
     Car Requests
@@ -486,20 +491,20 @@ input[type="color"] { height: 38px; padding: 2px 6px; cursor: pointer; }
     </nav>
 
     <div class="sidebar-footer">
-        <div class="sidebar-user">
-            <div class="sidebar-avatar">{{ strtoupper(substr(auth()->user()->full_name ?? 'A', 0, 1)) }}</div>
-            <div class="sidebar-user-info">
-                <div class="sidebar-user-name">{{ auth()->user()->full_name ?? 'Admin' }}</div>
-                <div class="sidebar-user-role">Administrator</div>
-            </div>
+    <div class="sidebar-user">
+        <div class="sidebar-avatar">{{ strtoupper(substr(Auth::guard('admin')->user()->full_name ?? 'A', 0, 1)) }}</div>
+        <div class="sidebar-user-info">
+            <div class="sidebar-user-name">{{ Auth::guard('admin')->user()->full_name ?? 'Admin' }}</div>
+            <div class="sidebar-user-role">Administrator</div>
         </div>
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="btn-logout">
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-                Sign out
-            </button>
-        </form>
+    </div>
+    <form method="POST" action="{{ route('admin.logout') }}">
+        @csrf
+        <button type="submit" class="btn-logout">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            Sign out
+        </button>
+    </form>
     </div>
 </aside>
 

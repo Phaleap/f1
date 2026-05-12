@@ -70,9 +70,7 @@
                 </a>
             </li>
             <li class="nav-divider"></li>
-            @if(Auth::user()->role?->role_name === 'admin')
-                <li><a href="{{ url('/admin') }}" class="nav-btn-outline">Admin</a></li>
-            @endif
+            
             <li>
                 <a href="{{ route('profile.edit') }}" class="nav-btn-outline">
                     {{ Auth::user()->full_name ? explode(' ', Auth::user()->full_name)[0] : 'Account' }}
@@ -141,11 +139,7 @@
             <a href="{{ route('profile.edit') }}" onclick="toggleMobileNav()">
                 <span class="nm-num">0{{ $i++ }}</span>{{ Auth::user()->full_name ? explode(' ', Auth::user()->full_name)[0] : 'Account' }}
             </a>
-            @if(Auth::user()->role?->role_name === 'admin')
-                <a href="{{ url('/admin') }}" onclick="toggleMobileNav()">
-                    <span class="nm-num">0{{ $i++ }}</span>Admin
-                </a>
-            @endif
+        
         @else
             <a href="{{ route('login') }}" onclick="toggleMobileNav()">
                 <span class="nm-num">0{{ $i++ }}</span>Login
@@ -279,6 +273,11 @@ nav#navbar.scrolled { height: 56px; }
     font-size: 0.68rem !important;
     white-space: nowrap;
     transition: border-color 0.3s, color 0.3s !important;
+}
+.nav-btn-icon {
+    width: 42px;
+    padding: 7px 0 !important;
+    justify-content: center;
 }
 .nav-btn-outline:hover { border-color: rgba(225,6,0,0.5) !important; color: var(--off-white) !important; }
 .nav-btn-outline::after { display: none !important; }
