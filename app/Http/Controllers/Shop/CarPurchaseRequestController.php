@@ -9,10 +9,8 @@ use App\Services\TelegramService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class CarPurchaseRequestController extends Controller
 {
-    // Show request form
     public function create($productId)
     {
         $product = Product::findOrFail($productId);
@@ -24,7 +22,6 @@ class CarPurchaseRequestController extends Controller
         return view('shop.car-request.create', compact('product'));
     }
 
-    // Submit request
     public function store(Request $request)
     {
         $request->validate([
@@ -35,13 +32,14 @@ class CarPurchaseRequestController extends Controller
             'payment_preference' => 'required|in:online,walk_in',
         ]);
 
+        // Only block if there's an unreviewed pending request
         $existing = CarPurchaseRequest::where('user_id', Auth::id())
             ->where('product_id', $request->product_id)
-            ->whereIn('request_status', ['pending', 'approved'])
+            ->where('request_status', 'pending')
             ->first();
 
         if ($existing) {
-            return back()->with('error', 'You already have an active request for this car.');
+            return back()->with('error', 'You already have a pending request for this car. Please wait for our team to review it.');
         }
 
         $product = Product::findOrFail($request->product_id);
@@ -56,7 +54,6 @@ class CarPurchaseRequestController extends Controller
             'request_status'     => 'pending',
         ]);
 
-        // Notify admin
         try {
             $telegram = new TelegramService();
             $telegram->notifyAdmin(
@@ -69,14 +66,13 @@ class CarPurchaseRequestController extends Controller
                 "👉 Review at: " . url('/admin/car-requests/' . $carRequest->request_id)
             );
         } catch (\Exception $e) {
-            // Silently fail — don't block the user
+            // Silently fail
         }
 
         return redirect()->route('shop.car-request.my-requests')
             ->with('success', 'Your request has been submitted! We will review it shortly.');
     }
 
-    // User's own requests list
     public function myRequests()
     {
         $requests = CarPurchaseRequest::where('user_id', Auth::id())
@@ -139,7 +135,6 @@ class CarPurchaseRequestController extends Controller
             'remarks'      => 'Online payment completed. Ref: ' . $txRef,
         ]);
 
-        // Notify admin of payment
         try {
             $telegram = new TelegramService();
             $carRequest->load('product');

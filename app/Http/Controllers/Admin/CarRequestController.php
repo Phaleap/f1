@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\CarPurchaseRequest;
 use App\Models\CarOrder;
 use App\Models\CarOrderStatusHistory;
+use App\Models\Inventory;
+use App\Models\StockMovement;
 use App\Services\TelegramService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CarRequestController extends Controller
 {
-    // List all requests
     public function index()
     {
         $requests = CarPurchaseRequest::with(['user', 'product'])
@@ -22,7 +23,6 @@ class CarRequestController extends Controller
         return view('admin.car-requests.index', compact('requests'));
     }
 
-    // Show single request detail
     public function show($id)
     {
         $carRequest = CarPurchaseRequest::with([
@@ -32,7 +32,6 @@ class CarRequestController extends Controller
         return view('admin.car-requests.show', compact('carRequest'));
     }
 
-    // Approve → creates car_order automatically
     public function approve($id)
     {
         $carRequest = CarPurchaseRequest::with(['user', 'product'])->findOrFail($id);
@@ -63,6 +62,25 @@ class CarRequestController extends Controller
             'remarks'      => 'Request approved, car order created.',
         ]);
 
+        // Decrement stock
+        $inventory = Inventory::where('product_id', $carRequest->product_id)
+            ->whereNull('variant_id')
+            ->first();
+
+        if ($inventory) {
+            $inventory->decrement('stock_quantity', 1);
+            $inventory->update(['last_updated' => now()]);
+
+            StockMovement::create([
+                'inventory_id'  => $inventory->inventory_id,
+                'movement_type' => 'out',
+                'quantity'      => 1,
+                'reason'        => 'Car purchase request approved. Order #' . $carOrder->car_order_id,
+                'moved_by'      => Auth::id(),
+                'moved_at'      => now(),
+            ]);
+        }
+
         // Notify admin
         try {
             $telegram = new TelegramService();
@@ -82,7 +100,6 @@ class CarRequestController extends Controller
             ->with('success', 'Request approved and car order #' . $carOrder->car_order_id . ' created.');
     }
 
-    // Reject request
     public function reject(Request $request, $id)
     {
         $request->validate([
@@ -102,7 +119,6 @@ class CarRequestController extends Controller
             'rejection_reason' => $request->rejection_reason,
         ]);
 
-        // Notify admin
         try {
             $telegram = new TelegramService();
             $telegram->notifyAdmin(
@@ -131,7 +147,6 @@ class CarRequestController extends Controller
                 'confirmed_at'       => now(),
             ]);
 
-            // Notify admin
             try {
                 $telegram = new TelegramService();
                 $appt = $carRequest->appointment;

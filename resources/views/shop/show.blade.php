@@ -969,12 +969,16 @@
     </form>
 @endif
 
-                <button class="btn-wishlist">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                        <path d="M7 12S1.5 8.5 1.5 4.5A2.5 2.5 0 016 3a2.5 2.5 0 011 .5A2.5 2.5 0 0112.5 4.5C12.5 8.5 7 12 7 12z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
-                    </svg>
-                    Save to Wishlist
-                </button>
+                <form method="POST" action="{{ route('wishlist.add') }}">
+    @csrf
+    <input type="hidden" name="product_id" value="{{ $product->id }}">
+    <button type="submit" class="btn-wishlist">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 12S1.5 8.5 1.5 4.5A2.5 2.5 0 016 3a2.5 2.5 0 011 .5A2.5 2.5 0 0112.5 4.5C12.5 8.5 7 12 7 12z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+        </svg>
+        Save to Wishlist
+    </button>
+</form>
             </div>
 
             {{-- Car Specs --}}

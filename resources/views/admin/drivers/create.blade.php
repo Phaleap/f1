@@ -11,7 +11,7 @@
 <div class="card" style="max-width: 720px;">
     <div class="card-header"><span class="card-title">Driver Details</span></div>
     <div class="card-body">
-        <form method="POST" action="{{ route('admin.drivers.store') }}">
+        <form method="POST" action="{{ route('admin.drivers.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-grid form-grid-2">
                 <div class="form-group">
@@ -25,8 +25,8 @@
                         <option value="">— No team —</option>
                         @foreach($teams as $team)
                         <option value="{{ $team->team_id }}" {{ old('team_id') == $team->team_id ? 'selected' : '' }}>
-    {{ $team->team_name }}
-</option>
+                            {{ $team->team_name }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -46,12 +46,30 @@
                     <label>Championships</label>
                     <input type="number" name="championships" value="{{ old('championships', 0) }}" min="0">
                 </div>
+
+                {{-- Photo upload --}}
                 <div class="form-group full">
-                    <label>Photo URL <span>(full URL to driver photo — used on shop showcase)</span></label>
-                    <input type="text" name="photo_url" value="{{ old('photo_url') }}" placeholder="https://...">
-                    <span class="form-hint">Tip: use a portrait/headshot image URL. This shows on the shop hero alongside the car.</span>
+                    <label>Driver Photo <span>(portrait/headshot · shown on shop showcase)</span></label>
+
+                    {{-- Live preview before submit --}}
+                    <div id="photo-preview-wrap" style="display:none; margin-bottom:10px;">
+                        <img id="photo-preview"
+                             style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--gray-200);">
+                    </div>
+
+                    <input type="file"
+                           name="photo"
+                           id="photo-input"
+                           accept="image/jpeg,image/png,image/webp"
+                           onchange="previewPhoto(this)">
+
+                    <span class="form-hint" style="margin-top:6px;display:block;">
+                        JPG, PNG or WebP · max 2 MB
+                    </span>
+                    @error('photo')<span class="form-error">{{ $message }}</span>@enderror
                 </div>
             </div>
+
             <div style="margin-top:20px; display:flex; gap:10px;">
                 <button type="submit" class="btn btn-primary">Create Driver</button>
                 <a href="{{ route('admin.drivers.index') }}" class="btn btn-secondary">Cancel</a>
@@ -59,4 +77,19 @@
         </form>
     </div>
 </div>
+
+<script>
+function previewPhoto(input) {
+    const wrap = document.getElementById('photo-preview-wrap');
+    const img  = document.getElementById('photo-preview');
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            img.src = e.target.result;
+            wrap.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
 @endsection
