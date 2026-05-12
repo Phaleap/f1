@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
-
 use App\Models\ContactMessage;
+use App\Services\TelegramService;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -21,6 +21,20 @@ class ContactController extends Controller
         ]);
 
         ContactMessage::create($validated);
+
+        // Notify admin via Telegram
+        try {
+            $telegram = new TelegramService();
+            $telegram->notifyAdmin(
+                "📩 <b>New Contact Message</b>\n\n" .
+                "👤 Name: {$validated['name']}\n" .
+                "📧 Email: {$validated['email']}\n" .
+                "📋 Subject: {$validated['subject']}\n\n" .
+                "💬 Message:\n{$validated['message']}"
+            );
+        } catch (\Exception $e) {
+            // Silently fail — don't block the user
+        }
 
         return back()->with('success', 'Message received. We\'ll get back to you within 24 hours.');
     }
