@@ -74,14 +74,20 @@ class CarPurchaseRequestController extends Controller
     }
 
     public function myRequests()
-    {
-        $requests = CarPurchaseRequest::where('user_id', Auth::id())
-            ->with(['product', 'carOrder'])
-            ->latest()
-            ->get();
+{
+    $requests = CarPurchaseRequest::where('user_id', Auth::id())
+        ->with(['product', 'carOrder'])
+        ->latest()
+        ->get();
 
-        return view('shop.car-request.my-requests', compact('requests'));
-    }
+    // Mark all as seen
+    CarPurchaseRequest::where('user_id', Auth::id())
+        ->whereIn('request_status', ['approved', 'rejected'])
+        ->where('seen_by_user', false)
+        ->update(['seen_by_user' => true]); // ← add this
+
+    return view('shop.car-request.my-requests', compact('requests'));
+}
 
     public function payPage(CarPurchaseRequest $carRequest)
     {

@@ -9,10 +9,11 @@ class CarPurchaseRequest extends Model
     protected $primaryKey = 'request_id';
 
     protected $fillable = [
-        'user_id', 'product_id', 'full_name', 'phone',
-        'message', 'payment_preference', 'request_status',
-        'reviewed_by', 'reviewed_at', 'rejection_reason'
-    ];
+    'user_id', 'product_id', 'full_name', 'phone',
+    'message', 'payment_preference', 'request_status',
+    'reviewed_by', 'reviewed_at', 'rejection_reason',
+    'seen_by_user' // ← add this
+];
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');

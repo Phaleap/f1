@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+
 class ProfileController extends Controller
 {
     /**
@@ -44,20 +45,23 @@ class ProfileController extends Controller
      * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
+{
+    $request->validateWithBag('userDeletion', [
+        'password' => ['required', 'current_password'],
+    ]);
 
-        $user = $request->user();
+    $user = $request->user();
 
-        Auth::logout();
+    Auth::logout();
 
-        $user->delete();
+    // Delete in correct order to avoid FK conflicts
+    \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+    $user->delete();
+    \DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-        return Redirect::to('/');
-    }
+    return Redirect::to('/');
+}
 }

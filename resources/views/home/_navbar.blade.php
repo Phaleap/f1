@@ -1,5 +1,17 @@
 {{-- ─── Navbar ────────────────────────────────────────────────────── --}}
-
+@php
+    $notifCount = 0;
+    $notifications = collect();
+    if (Auth::check()) {
+        $notifications = \App\Models\CarPurchaseRequest::where('user_id', Auth::id())
+            ->whereIn('request_status', ['approved', 'rejected'])
+            ->where('seen_by_user', false)
+            ->with('product')
+            ->latest()
+            ->get();
+        $notifCount = $notifications->count();
+    }
+@endphp
 @php
     $cartCount = 0;
     if (Auth::check()) {
@@ -82,6 +94,61 @@
                     <button type="submit" class="nav-btn-outline nav-btn-logout">Logout</button>
                 </form>
             </li>
+            @auth
+<li class="notif-wrap" id="notifWrap">
+    <button class="nav-icon-link notif-btn" onclick="toggleNotif(event)" title="Notifications">
+        <span class="cart-icon-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 01-3.46 0"/>
+            </svg>
+            @if($notifCount > 0)
+                <span class="cart-badge" id="notifBadge">{{ $notifCount }}</span>
+            @endif
+        </span>
+        Notifications
+    </button>
+
+    {{-- Dropdown --}}
+    <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-header">
+            <span class="notif-title">Notifications</span>
+            @if($notifCount > 0)
+                <a href="{{ route('shop.car-request.my-requests') }}" class="notif-view-all">View All</a>
+            @endif
+        </div>
+
+        @if($notifications->isEmpty())
+            <div class="notif-empty">No new notifications</div>
+        @else
+            @foreach($notifications as $notif)
+                <a href="{{ route('shop.car-request.my-requests') }}" class="notif-item">
+                    <div class="notif-icon {{ $notif->request_status === 'approved' ? 'notif-icon-green' : 'notif-icon-red' }}">
+                        @if($notif->request_status === 'approved')
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        @else
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        @endif
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-msg">
+                            Your request for <strong>{{ $notif->product->product_name ?? 'a car' }}</strong>
+                            was <span class="{{ $notif->request_status === 'approved' ? 'text-green' : 'text-red' }}">
+                                {{ $notif->request_status }}
+                            </span>
+                        </div>
+                        <div class="notif-time">{{ $notif->updated_at->diffForHumans() }}</div>
+                    </div>
+                </a>
+            @endforeach
+        @endif
+    </div>
+</li>
+@endauth
         @else
             <li><a href="{{ route('login') }}" class="nav-btn-outline">Login</a></li>
             <li><a href="{{ route('register') }}" class="nav-btn-primary">Register</a></li>
@@ -139,6 +206,12 @@
             <a href="{{ route('profile.edit') }}" onclick="toggleMobileNav()">
                 <span class="nm-num">0{{ $i++ }}</span>{{ Auth::user()->full_name ? explode(' ', Auth::user()->full_name)[0] : 'Account' }}
             </a>
+            <a href="{{ route('shop.car-request.my-requests') }}" onclick="toggleMobileNav()">
+    <span class="nm-num">0{{ $i++ }}</span>Notifications
+    @if($notifCount > 0)
+        <span class="nm-badge">{{ $notifCount }}</span>
+    @endif
+</a>
         
         @else
             <a href="{{ route('login') }}" onclick="toggleMobileNav()">
@@ -474,6 +547,113 @@ nav#navbar.scrolled { height: 56px; }
     .nav-mobile-foot { left: 28px; }
     .nav-mobile-close { top: 16px; right: 16px; }
 }
+/* ── Notification Dropdown ── */
+.notif-wrap { position: relative; }
+.notif-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(240,237,232,0.6);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+    font-family: 'Barlow', sans-serif;
+    transition: color 0.3s;
+}
+.notif-btn:hover { color: var(--off-white); }
+.notif-btn svg { opacity: 0.5; transition: opacity 0.3s; }
+.notif-btn:hover svg { opacity: 1; }
+
+.notif-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: -20px;  
+    width: 340px; 
+    background: #0d0d0d;
+    border: 1px solid rgba(255,255,255,0.06);
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.2s, transform 0.2s;
+}
+.notif-dropdown.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+}
+.notif-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.notif-title {
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(240,236,228,0.5);
+}
+.notif-view-all {
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    text-decoration: none;
+}
+.notif-view-all:hover { opacity: 0.7; }
+.notif-empty {
+    padding: 24px 16px;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: rgba(240,236,228,0.25);
+    text-align: center;
+    text-transform: uppercase;
+}
+.notif-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.notif-item:hover { background: rgba(255,255,255,0.03); }
+.notif-item:last-child { border-bottom: none; }
+.notif-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.notif-icon-green { background: rgba(74,222,128,0.1); color: #4ade80; }
+.notif-icon-red   { background: rgba(225,6,0,0.1);    color: var(--red); }
+.notif-content { flex: 1; }
+.notif-msg {
+    font-size: 0.72rem;
+    color: rgba(240,236,228,0.7);
+    line-height: 1.4;
+    letter-spacing: 0.3px;
+}
+.notif-msg strong { color: var(--off-white); }
+.text-green { color: #4ade80; }
+.text-red   { color: var(--red); }
+.notif-time {
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    color: rgba(240,236,228,0.25);
+    margin-top: 4px;
+    text-transform: uppercase;
+}
 </style>
 
 
@@ -501,4 +681,15 @@ function updateCartBadge(newCount) {
     badge.classList.add('bump');
     setTimeout(() => badge.classList.remove('bump'), 300);
 }
+function toggleNotif(e) {
+    e.stopPropagation();
+    document.getElementById('notifDropdown').classList.toggle('open');
+}
+
+document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('notifWrap');
+    if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('notifDropdown')?.classList.remove('open');
+    }
+});
 </script>
