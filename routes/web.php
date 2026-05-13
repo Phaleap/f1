@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\CarOrderController;
 use App\Http\Controllers\Shop\AppointmentController;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 
 // ─── Public routes ────────────────────────────────────────────────────────────
 
@@ -120,6 +121,9 @@ Route::delete('admins/{admin}', [AdminController::class, 'destroy'])->name('admi
     Route::get('car-orders/{id}', [CarOrderController::class, 'show'])->name('car-orders.show');
     Route::post('car-orders/{id}/confirm-payment', [CarOrderController::class, 'confirmWalkInPayment'])->name('car-orders.confirm-payment');
     Route::post('car-orders/{id}/status', [CarOrderController::class, 'updateStatus'])->name('car-orders.update-status');
+
+    Route::resource('coupons', AdminCouponController::class);
+    
 });
 
 // ─── Customer routes (auth required) ─────────────────────────────────────────
