@@ -165,6 +165,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/car-payment/{carRequest}', [CarPurchaseRequestController::class, 'payPage'])->name('shop.car-payment.show');
     Route::post('/car-payment/{carRequest}', [CarPurchaseRequestController::class, 'processPayment'])->name('shop.car-payment.process');
+
+    
 });
 
 require __DIR__.'/auth.php';

@@ -214,6 +214,41 @@ body { background: var(--dark); color: var(--off-white); font-family: 'Barlow', 
                         <span class="summary-label">Shipping</span>
                         <span class="summary-val" id="shippingDisplay">—</span>
                     </div>
+                    {{-- Coupon --}}
+<form action="{{ route('coupon.apply') }}" method="POST" style="margin-bottom:8px;">
+    @csrf
+    <div style="display:flex; gap:8px;">
+        <input type="text" name="coupon_code"
+               value="{{ $coupon ? $coupon['code'] : old('coupon_code') }}"
+               placeholder="PROMO CODE"
+               style="flex:1; background:#060606; border:1px solid rgba(255,255,255,0.06);
+                      color:#f0ece4; font-family:'Barlow',sans-serif; font-size:0.75rem;
+                      padding:10px 12px; outline:none; letter-spacing:2px;">
+        <button type="submit"
+                style="background:#E10600; border:none; color:#fff;
+                       font-family:'Barlow',sans-serif; font-size:0.6rem;
+                       letter-spacing:3px; padding:0 16px; cursor:pointer; white-space:nowrap;">
+            APPLY
+        </button>
+    </div>
+</form>
+
+@if(session('coupon_error'))
+    <div style="color:#e74c3c; font-size:0.6rem; letter-spacing:2px; margin-bottom:8px;">
+        {{ session('coupon_error') }}
+    </div>
+@endif
+
+@if($coupon)
+    <div class="summary-row">
+        <span class="summary-label" style="color:#4ade80;">
+            COUPON ({{ $coupon['code'] }})
+        </span>
+        <span class="summary-val" style="color:#4ade80;">
+            -${{ number_format($coupon['discount'], 2) }}
+        </span>
+    </div>
+@endif
                     <div class="summary-divider"></div>
                     <div class="summary-row">
                         <span class="summary-total-label">Total</span>
@@ -230,13 +265,15 @@ body { background: var(--dark); color: var(--off-white); font-family: 'Barlow', 
 
 <script>
 const subtotal = {{ $subtotal }};
+const discount = {{ $coupon ? $coupon['discount'] : 0 }};
 
 function updateTotal() {
     const select = document.getElementById('shippingSelect');
     const option = select.options[select.selectedIndex];
     const fee = parseFloat(option.getAttribute('data-fee')) || 0;
     document.getElementById('shippingDisplay').textContent = '$' + fee.toFixed(2);
-    document.getElementById('totalDisplay').textContent = '$' + (subtotal + fee).toFixed(2);
+    document.getElementById('totalDisplay').textContent = 
+        '$' + Math.max(0, subtotal + fee - discount).toFixed(2);
 }
 
 // Run on page load

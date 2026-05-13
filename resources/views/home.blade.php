@@ -1001,7 +1001,9 @@
     </style>
 </head>
 <body>
+    
     @include('home._ticker')
+    
     @include('home._navbar')
     @include('home._hero')
     @include('home._marquee', ['direction' => 'normal', 'duration' => '20s'])
