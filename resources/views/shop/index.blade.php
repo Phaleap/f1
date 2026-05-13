@@ -305,6 +305,73 @@
 @keyframes scrollPulse { 0%,100%{opacity:0.3;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.2)} }
 
 /* ═══════════════════════════════════════
+   VALUE PROPS STRIP
+═══════════════════════════════════════ */
+.value-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: #050505;
+    border-bottom: 1px solid var(--border);
+}
+
+.value-strip-item {
+    padding: 36px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    transition: background 0.25s;
+}
+.value-strip-item:hover { background: rgba(255,255,255,0.015); }
+
+.value-strip-item + .value-strip-item {
+    border-left: 1px solid var(--border);
+}
+
+.value-strip-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.value-strip-item:hover::before { transform: scaleX(1); }
+
+.value-strip-icon {
+    width: 28px; height: 28px;
+    margin-bottom: 4px;
+    opacity: 0.5;
+    transition: opacity 0.25s;
+}
+.value-strip-item:hover .value-strip-icon { opacity: 0.85; }
+
+.value-strip-eyebrow {
+    font-size: 0.55rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--red);
+}
+
+.value-strip-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    color: var(--off-white);
+    line-height: 1;
+}
+
+.value-strip-desc {
+    font-size: 0.65rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-top: 2px;
+    font-weight: 300;
+}
+
+/* ═══════════════════════════════════════
    TAB BAR
 ═══════════════════════════════════════ */
 .tab-bar {
@@ -629,6 +696,7 @@
     .cars-body, .merch-body { padding: 40px 32px; }
     .product-grid { grid-template-columns: repeat(2, 1fr); }
     .merch-grid { grid-template-columns: repeat(3, 1fr); }
+    .value-strip-item { padding: 28px 32px; }
 }
 @media (max-width: 768px) {
     .hero-stage { grid-template-columns: 1fr; }
@@ -644,6 +712,9 @@
     .hero-car-panel { min-height: 300px; }
     .tab-btn { font-size: 0.58rem; letter-spacing: 3px; gap: 8px; }
     .tab-count { display: none; }
+    .value-strip { grid-template-columns: 1fr; }
+    .value-strip-item + .value-strip-item { border-left: none; border-top: 1px solid var(--border); }
+    .value-strip-item { padding: 24px; }
 }
 @media (max-width: 480px) {
     .merch-grid { grid-template-columns: 1fr; }
@@ -716,17 +787,17 @@
                         <div class="driver-car-badge-model">{{ $car->carModel?->model_name ?? '' }}</div>
                     </div>
                     <div class="driver-photo-wrap">
-    @php
-        $photoSrc = match(true) {
-            !$driver || !$driver->photo_url => 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=80',
-            str_starts_with($driver->photo_url, 'http') => $driver->photo_url,
-            default => asset('storage/' . $driver->photo_url)
-        };
-    @endphp
-    <img src="{{ $photoSrc }}"
-         alt="{{ $driver?->driver_name ?? 'Driver' }}"
-         onerror="this.src='https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=80'">
-</div>
+                        @php
+                            $photoSrc = match(true) {
+                                !$driver || !$driver->photo_url => 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=80',
+                                str_starts_with($driver->photo_url, 'http') => $driver->photo_url,
+                                default => asset('storage/' . $driver->photo_url)
+                            };
+                        @endphp
+                        <img src="{{ $photoSrc }}"
+                             alt="{{ $driver?->driver_name ?? 'Driver' }}"
+                             onerror="this.src='https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=80'">
+                    </div>
                     <div class="driver-overlay"></div>
                     <div class="driver-info">
                         <div class="driver-nationality">{{ $driver?->nationality ?? '—' }}</div>
@@ -782,11 +853,51 @@
     </section>
 
     {{-- ═══════════════════════════════════════
+         VALUE PROPS STRIP
+    ═══════════════════════════════════════ --}}
+    <div class="value-strip">
+
+        <div class="value-strip-item">
+            <svg class="value-strip-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="14" cy="14" r="11"/>
+                <path d="M14 8v6l4 2"/>
+                <path d="M9 3.5C6 5.2 4 8.4 4 12"/>
+            </svg>
+            <div class="value-strip-eyebrow">Official</div>
+            <div class="value-strip-title">Licensed Replicas</div>
+            <div class="value-strip-desc">Authentic team liveries and markings, verified and approved directly by the constructors.</div>
+        </div>
+
+        <div class="value-strip-item">
+            <svg class="value-strip-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="10" width="22" height="10" rx="1.5"/>
+                <path d="M7 10V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/>
+                <circle cx="10" cy="21" r="2"/>
+                <circle cx="18" cy="21" r="2"/>
+                <path d="M6 15h4M18 15h4"/>
+            </svg>
+            <div class="value-strip-eyebrow">Scale</div>
+            <div class="value-strip-title">1:18 &amp; 1:43</div>
+            <div class="value-strip-desc">Two collector scales — the iconic 1:18 for display centrepieces, and the compact 1:43 for full-grid collections.</div>
+        </div>
+
+        <div class="value-strip-item">
+            <svg class="value-strip-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14h20M14 4l10 10-10 10"/>
+                <circle cx="8" cy="14" r="2"/>
+            </svg>
+            <div class="value-strip-eyebrow">Ships</div>
+            <div class="value-strip-title">Worldwide</div>
+            <div class="value-strip-desc">Secure collector-grade packaging with full tracking, delivered to any country on the grid.</div>
+        </div>
+
+    </div>
+
+    {{-- ═══════════════════════════════════════
          TAB BAR
     ═══════════════════════════════════════ --}}
     <div class="tab-bar" id="tabBar">
         <button class="tab-btn active" id="tab-cars" onclick="switchTab('cars')">
-            {{-- Car icon --}}
             <svg class="tab-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M2 9.5l1.5-4h9l1.5 4"/>
                 <rect x="1" y="9.5" width="14" height="3" rx="1"/>
@@ -798,7 +909,6 @@
             <span class="tab-count">{{ $allCars->total() }}</span>
         </button>
         <button class="tab-btn" id="tab-merch" onclick="switchTab('merch')">
-            {{-- Shirt icon --}}
             <svg class="tab-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5.5 2C5.5 2 5 4 8 4s2.5-2 2.5-2L13 4l-2 2v8H5V6L3 4z"/>
             </svg>
@@ -1028,7 +1138,6 @@ function switchTab(id) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
     document.getElementById('panel-' + id).classList.add('active');
-    // Persist tab state in URL hash
     history.replaceState(null, '', '#' + id);
 }
 
