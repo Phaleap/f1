@@ -903,7 +903,7 @@
                 <div class="variant-grid">
                     @foreach($product->variants as $variant)
                     @php
-                        $vStock = $variant->inventory?->stock_quantity ?? 0;
+                        $vStock = $variant->inventory()->first()?->stock_quantity ?? 0;
                     @endphp
                     <button class="variant-btn {{ $vStock <= 0 ? 'out-of-stock' : '' }}"
                             data-variant-id="{{ $variant->variant_id }}"
@@ -1266,8 +1266,6 @@ if (qtyInput) {
 /* ─── Cart handler ─── */
 function handleCart(e) {
     e.preventDefault();
-    const form = document.getElementById('cartForm');
-    const btn  = document.getElementById('addCartBtn')
 
     // If product has variants and none selected, shake the button
     const hasVariants = {{ $product->variants && $product->variants->count() > 0 ? 'true' : 'false' }};

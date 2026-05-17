@@ -409,11 +409,6 @@
         <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9,3 14,8 9,13"/></svg>
     </button>
 </form>
-
-        <p class="auth-footer">
-            New team member?
-            <a href="{{ route('register') }}">Register Now</a>
-        </p>
     </div>
 
 </div>
