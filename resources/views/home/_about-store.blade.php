@@ -1,99 +1,111 @@
 {{-- ─── What Our Store Is All About ────────────────────────────────── --}}
 
-{{-- Scroll spacer wrapper for sticky effect --}}
-<div id="about-scroll-spacer">
+<div class="as-section">
 
-    <div id="about-sticky">
+    <div class="as-header">
+        <p class="as-eyebrow">What We're About</p>
+        <h2 class="as-heading">Built for Those Who <span>Live</span> the Sport.</h2>
+    </div>
 
-        {{-- Red left accent bar --}}
-        <div class="as-red-bar"></div>
+    <div class="as-panels" id="as-panels">
 
-        {{-- ════ LEFT SIDE — 50vw text ════ --}}
-        <div class="as-left">
+        {{-- Panel 01 --}}
+        <div class="as-panel is-active" id="as-panel-0">
+            <div class="as-panel-bgnum">01</div>
+            <div class="as-panel-vert-label">The Machines</div>
 
-            <p class="as-eyebrow">What We're About</p>
-
-            <h2 class="as-heading">
-                Built for Those<br>Who <span>Live</span><br>the Sport.
-            </h2>
-
-            <p class="as-sub">
-                Not just a store. A tribute to speed, rivalry, and the relentless
-                pursuit of greatness — channeled into every product we carry.
-            </p>
-
-            <div class="as-connector"></div>
-
-            {{-- scroll hint --}}
-            <div class="as-scroll-hint">
-                <div class="as-scroll-line"></div>
-                <span>Scroll to explore</span>
+            <div class="as-panel-collapsed">
+                <span class="as-panel-num">01</span>
+                <div class="as-panel-line"></div>
+                <h3 class="as-panel-title-small">The Machines</h3>
+                <button class="as-read-more">Read More &#x2192;</button>
             </div>
 
+            <div class="as-panel-expanded">
+                <div class="as-exp-left">
+                    <span class="as-exp-num">01</span>
+                    <div class="as-exp-line"></div>
+                    <h3 class="as-exp-title">The<br>Machines</h3>
+                    <p class="as-exp-text">
+                        Precision die-cast replicas of the cars that defined eras —
+                        every livery, every detail, obsessively accurate.
+                        From championship-winning RB19s to legendary Ferraris.
+                    </p>
+                    <div class="as-exp-tag">Scale Models · Die-Cast · Replicas</div>
+                    <button class="as-close-btn">&#x2715; Close</button>
+                </div>
+                <div class="as-exp-right">
+                    {{-- Place your image here --}}
+                    <div class="as-exp-img" style="background-image: url('https://static0.carbuzzimages.com/wordpress/wp-content/uploads/2024/12/mercedes-f1-v6-being-worked-on.jpg');"></div>
+                    <div class="as-exp-img-overlay"></div>
+                </div>
+            </div>
         </div>
 
-        {{-- ════ RIGHT SIDE — stacked cards ════ --}}
-        <div class="as-right">
+        {{-- Panel 02 --}}
+        <div class="as-panel" id="as-panel-1">
+            <div class="as-panel-bgnum">02</div>
+            <div class="as-panel-vert-label">The Culture</div>
 
-            <div class="as-card-stack">
-
-                {{-- Card 01 --}}
-                <div class="as-card" id="as-card-1">
-                    <div class="as-card-inner">
-                        <span class="as-card-num">01</span>
-                        <div class="as-card-line"></div>
-                        <h3 class="as-card-title">The Machines</h3>
-                        <p class="as-card-text">
-                            Precision die-cast replicas of the cars that defined eras —
-                            every livery, every detail, obsessively accurate.
-                            From championship-winning RB19s to legendary Ferraris.
-                        </p>
-                        <div class="as-card-tag">Scale Models · Die-Cast · Replicas</div>
-                    </div>
-                    <div class="as-card-bg-number">01</div>
-                </div>
-
-                {{-- Card 02 --}}
-                <div class="as-card" id="as-card-2">
-                    <div class="as-card-inner">
-                        <span class="as-card-num">02</span>
-                        <div class="as-card-line"></div>
-                        <h3 class="as-card-title">The Culture</h3>
-                        <p class="as-card-text">
-                            Apparel and gear that carry the identity of the paddock —
-                            worn by fans who know the difference between a fan
-                            and a follower. Rep your team, own your lane.
-                        </p>
-                        <div class="as-card-tag">Apparel · Gear · Paddock Style</div>
-                    </div>
-                    <div class="as-card-bg-number">02</div>
-                </div>
-
-                {{-- Card 03 --}}
-                <div class="as-card" id="as-card-3">
-                    <div class="as-card-inner">
-                        <span class="as-card-num">03</span>
-                        <div class="as-card-line"></div>
-                        <h3 class="as-card-title">The Standard</h3>
-                        <p class="as-card-text">
-                            Every order handled with the same relentless focus that
-                            goes into building an F1 car — fast, precise, no excuses.
-                            Race-speed delivery, podium-grade packaging.
-                        </p>
-                        <div class="as-card-tag">Fast Shipping · Quality First · No Excuses</div>
-                    </div>
-                    <div class="as-card-bg-number">03</div>
-                </div>
-
+            <div class="as-panel-collapsed">
+                <span class="as-panel-num">02</span>
+                <div class="as-panel-line"></div>
+                <h3 class="as-panel-title-small">The Culture</h3>
+                <button class="as-read-more">Read More &#x2192;</button>
             </div>
 
-            {{-- Progress indicator --}}
-            <div class="as-progress">
-                <div class="as-progress-dot active" data-index="0"></div>
-                <div class="as-progress-dot" data-index="1"></div>
-                <div class="as-progress-dot" data-index="2"></div>
+            <div class="as-panel-expanded">
+                <div class="as-exp-left">
+                    <span class="as-exp-num">02</span>
+                    <div class="as-exp-line"></div>
+                    <h3 class="as-exp-title">The<br>Culture</h3>
+                    <p class="as-exp-text">
+                        Apparel and gear that carry the identity of the paddock —
+                        worn by fans who know the difference between a fan
+                        and a follower. Rep your team, own your lane.
+                    </p>
+                    <div class="as-exp-tag">Apparel · Gear · Paddock Style</div>
+                    <button class="as-close-btn">&#x2715; Close</button>
+                </div>
+                <div class="as-exp-right">
+                    {{-- Place your image here --}}
+                    <div class="as-exp-img" style="background-image: url('https://cdn-cs-images.racer.com/v3/assets/blte77f57883ea46be1/blte9b6e11c14fcfd4e/67d41b2d6d271552d240b5e2/1019700814-LAT-20230618-GP2309_143841_77A0214.jpg?environment=live');"></div>
+                    <div class="as-exp-img-overlay"></div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Panel 03 --}}
+        <div class="as-panel" id="as-panel-2">
+            <div class="as-panel-bgnum">03</div>
+            <div class="as-panel-vert-label">The Standard</div>
+
+            <div class="as-panel-collapsed">
+                <span class="as-panel-num">03</span>
+                <div class="as-panel-line"></div>
+                <h3 class="as-panel-title-small">The Standard</h3>
+                <button class="as-read-more">Read More &#x2192;</button>
             </div>
 
+            <div class="as-panel-expanded">
+                <div class="as-exp-left">
+                    <span class="as-exp-num">03</span>
+                    <div class="as-exp-line"></div>
+                    <h3 class="as-exp-title">The<br>Standard</h3>
+                    <p class="as-exp-text">
+                        Every order handled with the same relentless focus that
+                        goes into building an F1 car — fast, precise, no excuses.
+                        Race-speed delivery, podium-grade packaging.
+                    </p>
+                    <div class="as-exp-tag">Fast Shipping · Quality First · No Excuses</div>
+                    <button class="as-close-btn">&#x2715; Close</button>
+                </div>
+                <div class="as-exp-right">
+                    {{-- Place your image here --}}
+                    <div class="as-exp-img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/5/55/F1_24_cover_art.jpg');"></div>
+                    <div class="as-exp-img-overlay"></div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -102,75 +114,45 @@
 
 <style>
 /* ─────────────────────────────────────────
-   ABOUT STORE — Split Sticky Layout
+   ABOUT STORE — Accordion Panel Layout
 ───────────────────────────────────────── */
 
-#about-scroll-spacer {
-    height: 400vh;   /* 4x viewport = 3 cards worth of scroll */
-    position: relative;
-}
-
-#about-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
-    background: var(--dark);
-}
-
-/* Top separator line */
-#about-sticky::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 60px; right: 60px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(225,6,0,0.25), transparent);
-    z-index: 10;
-}
-
-/* Subtle red bloom */
-#about-sticky::after {
-    content: '';
-    position: absolute;
-    top: -80px; left: 25%;
-    width: 600px; height: 500px;
-    background: radial-gradient(ellipse at top, rgba(225,6,0,0.07) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* Red left accent bar */
-.as-red-bar {
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: linear-gradient(to bottom, transparent 0%, var(--red) 30%, var(--red) 70%, transparent 100%);
-    z-index: 10;
-}
-
-/* ════ LEFT SIDE ════ */
-.as-left {
-    width: 50%;
-    padding: 0 70px 0 80px;
+.as-section {
+    background: #0a0a0a;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
+    padding: 60px 0;
     position: relative;
-    z-index: 2;
+    overflow: hidden;
+}
+
+.as-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(225,6,0,0.3), transparent);
+}
+
+/* Header */
+.as-header {
+    text-align: center;
+    margin-bottom: 56px;
 }
 
 .as-eyebrow {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     letter-spacing: 8px;
     color: var(--red);
     text-transform: uppercase;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.1s forwards;
 }
 .as-eyebrow::before,
 .as-eyebrow::after {
@@ -183,317 +165,330 @@
 
 .as-heading {
     font-family: 'Bebas Neue', cursive;
-    font-size: clamp(3.5rem, 5.5vw, 6.5rem);
-    letter-spacing: 5px;
-    line-height: 0.95;
-    color: #ffffff;
-    margin: 0 0 28px;
-    opacity: 0;
-    animation: fadeUp 0.9s ease 0.3s forwards;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    letter-spacing: 6px;
+    color: #fff;
+    line-height: 1;
+    margin: 0;
 }
 .as-heading span {
     color: var(--red);
-    text-shadow: 0 0 60px rgba(225,6,0,0.5);
     font-style: italic;
 }
 
-.as-sub {
-    font-size: 0.95rem;
-    letter-spacing: 1px;
-    color: rgba(240,237,232,0.5);
-    line-height: 1.9;
-    max-width: 400px;
-    margin-bottom: 40px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.5s forwards;
-}
-
-.as-connector {
-    width: 1px;
-    height: 48px;
-    background: linear-gradient(to bottom, rgba(225,6,0,0.7), transparent);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 0.65s forwards;
-}
-
-.as-scroll-hint {
+/* Panels container */
+.as-panels {
     display: flex;
-    align-items: center;
-    gap: 14px;
+    width: 100%;
+    max-width: 1360px;
+    height: 660px;
+    gap: 2px;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+/* Individual panel */
+.as-panel {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-top: 2px solid rgba(225,6,0,0);
+    cursor: pointer;
+    transition:
+        flex 0.75s cubic-bezier(0.22,1,0.36,1),
+        border-top-color 0.4s ease;
+    flex: 1;
+    min-width: 0;
+    background: #0f0f0f;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.as-panel.is-active {
+    flex: 5;
+    border-top-color: var(--red);
+    cursor: default;
+}
+
+.as-panel:not(.is-active):hover {
+    border-top-color: rgba(225,6,0,0.4);
+}
+
+/* Big background number */
+.as-panel-bgnum {
+    position: absolute;
+    right: -12px;
+    top: -10px;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 14rem;
+    letter-spacing: -8px;
+    color: rgba(255,255,255,0.025);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 0.5s;
+}
+.as-panel.is-active .as-panel-bgnum { opacity: 0.5; }
+
+/* Vertical ghost label on collapsed panels */
+.as-panel-vert-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 8px;
+    color: rgba(255,255,255,0.12);
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    user-select: none;
+}
+.as-panel.is-active .as-panel-vert-label { opacity: 0; }
+
+/* ── Collapsed state ── */
+.as-panel-collapsed {
+    padding: 32px 24px;
+    position: relative;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+}
+.as-panel.is-active .as-panel-collapsed {
     opacity: 0;
-    animation: fadeUp 0.6s ease 0.8s forwards;
+    pointer-events: none;
+    position: absolute;
 }
-.as-scroll-line {
-    width: 32px; height: 1px;
-    background: linear-gradient(to right, var(--red), transparent);
+.as-panel:not(.is-active) .as-panel-collapsed {
+    display: block;
 }
-.as-scroll-hint span {
+
+.as-panel-num {
     font-size: 0.58rem;
     letter-spacing: 5px;
-    color: rgba(240,237,232,0.25);
-    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 12px;
 }
 
-/* ════ RIGHT SIDE ════ */
-.as-right {
-    width: 50%;
-    position: relative;
-    display: flex;
+.as-panel-line {
+    width: 28px; height: 1px;
+    background: rgba(225,6,0,0.35);
+    margin-bottom: 14px;
+}
+
+.as-panel-title-small {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    letter-spacing: 4px;
+    color: #fff;
+    margin: 0 0 20px;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.as-read-more {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    padding: 60px 70px 60px 40px;
-    z-index: 2;
+    gap: 8px;
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(225,6,0,0.8);
+    border: 1px solid rgba(225,6,0,0.25);
+    padding: 8px 14px;
+    transition: all 0.25s;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+.as-panel:hover .as-read-more {
+    background: rgba(225,6,0,0.08);
+    border-color: rgba(225,6,0,0.5);
+    color: var(--red);
 }
 
-/* vertical divider between left and right */
-.as-right::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 15%; bottom: 15%;
-    width: 1px;
-    background: linear-gradient(to bottom, transparent, rgba(225,6,0,0.15), transparent);
-}
-
-.as-card-stack {
-    position: relative;
-    width: calc(100% - 56px);  /* leave 56px on right for the offset cards to peek */
-    max-width: 440px;
-    height: 360px;
-    margin-bottom: 36px;       /* room at bottom for the offset */
-}
-
-/* ── Individual cards ── */
-.as-card {
+/* ── Expanded state ── */
+.as-panel-expanded {
     position: absolute;
     inset: 0;
-    background: #0f0f0f;
-    border: 1px solid rgba(255,255,255,0.05);
-    border-top: 2px solid rgba(225,6,0,0.0); /* animated in via JS */
-    overflow: hidden;
     display: flex;
-    align-items: center;
-    justify-content: center;
-
-    /* Stack offset — each card slightly offset behind */
-    transition: transform 0.65s cubic-bezier(0.22,1,0.36,1),
-                opacity   0.65s cubic-bezier(0.22,1,0.36,1),
-                box-shadow 0.65s ease,
-                border-top-color 0.4s ease;
-}
-
-/* Default stacked state — diagonal offset like stacked papers */
-#as-card-1 { z-index: 3; transform: translate(0px,   0px);  opacity: 1;   box-shadow: 0 24px 60px rgba(0,0,0,0.7); border-top-color: var(--red); }
-#as-card-2 { z-index: 2; transform: translate(18px, 18px);  opacity: 1; }
-#as-card-3 { z-index: 1; transform: translate(36px, 36px);  opacity: 1; }
-
-/* Active (front) state */
-.as-card.is-active {
-    transform: translate(0px, 0px) !important;
-    opacity: 1 !important;
-    z-index: 10 !important;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.7) !important;
-    border-top-color: var(--red) !important;
-}
-
-/* Exited (slides up-left and fades out) */
-.as-card.is-exited {
-    transform: translate(-30px, -30px) !important;
-    opacity: 0 !important;
-    z-index: 0 !important;
+    opacity: 0;
     pointer-events: none;
+    transition: opacity 0.4s ease 0.3s;
+    z-index: 3;
+}
+.as-panel.is-active .as-panel-expanded {
+    opacity: 1;
+    pointer-events: all;
 }
 
-.as-card-inner {
-    padding: 44px 48px;
-    width: 100%;
-    position: relative;
-    z-index: 2;
+.as-exp-left {
+    flex: 0.3;
+    padding: 44px 44px 44px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
 }
 
-.as-card-num {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.62rem;
+.as-exp-num {
+    font-size: 0.6rem;
     letter-spacing: 6px;
     color: var(--red);
     font-weight: 700;
     display: block;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
-.as-card-line {
+.as-exp-line {
     width: 36px; height: 1px;
     background: rgba(225,6,0,0.4);
-    margin-bottom: 20px;
-}
-
-.as-card-title {
-    font-family: 'Bebas Neue', cursive;
-    font-size: clamp(2rem, 3.5vw, 3rem);
-    letter-spacing: 5px;
-    color: #ffffff;
     margin-bottom: 18px;
-    line-height: 1;
 }
 
-.as-card-text {
+.as-exp-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2.4rem, 4vw, 3.8rem);
+    letter-spacing: 5px;
+    color: #fff;
+    margin: 0 0 18px;
+    line-height: 0.95;
+}
+
+.as-exp-text {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.95rem;
-    letter-spacing: 0.5px;
+    font-size: 1.05rem;
+    letter-spacing: 0.8px;
     line-height: 1.85;
-    color: rgba(240,237,232,0.55);
+    color: rgba(240,237,232,0.78);
     margin-bottom: 28px;
-    max-width: 340px;
+    max-width: 360px;
 }
 
-.as-card-tag {
-    font-size: 0.55rem;
+.as-exp-tag {
+    font-size: 0.52rem;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: rgba(225,6,0,0.6);
     padding: 6px 12px;
     border: 1px solid rgba(225,6,0,0.2);
     display: inline-block;
+    margin-bottom: 28px;
 }
 
-/* Big background number watermark */
-.as-card-bg-number {
-    position: absolute;
-    right: -10px;
-    bottom: -20px;
-    font-family: 'Bebas Neue', cursive;
-    font-size: 11rem;
-    letter-spacing: -5px;
-    color: rgba(255,255,255,0.025);
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
-    z-index: 1;
+.as-close-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(240,237,232,0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    font-family: 'Barlow Condensed', sans-serif;
+    width: fit-content;
+}
+.as-close-btn:hover {
+    color: rgba(240,237,232,0.7);
+    border-color: rgba(255,255,255,0.2);
 }
 
-/* ── Progress dots ── */
-.as-progress {
+/* Image slot */
+.as-exp-right {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+    background: #1a1a1a; /* placeholder bg — remove when image is set */
+}
+
+.as-exp-img {
     position: absolute;
-    right: 24px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.55) saturate(0.7);
+    transition: transform 0.8s cubic-bezier(0.22,1,0.36,1);
 }
-.as-progress-dot {
-    width: 3px; height: 3px;
-    border-radius: 50%;
-    background: rgba(240,237,232,0.2);
-    transition: all 0.4s;
-}
-.as-progress-dot.active {
-    background: var(--red);
-    transform: scale(2.2);
-    box-shadow: 0 0 8px rgba(225,6,0,0.7);
+.as-panel.is-active .as-exp-img { transform: scale(1.04); }
+
+.as-exp-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #0f0f0f 0%, rgba(15,15,15,0.3) 50%, transparent 100%);
 }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-    #about-scroll-spacer { height: 350vh; }
-
-    #about-sticky {
+    .as-panels {
         flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
+        height: auto;
+        gap: 2px;
     }
-    .as-left {
-        width: 100%;
-        padding: 80px 32px 32px;
-        justify-content: flex-end;
-    }
-    .as-sub { display: none; }
-    .as-scroll-hint { display: none; }
-    .as-right {
-        width: 100%;
-        padding: 20px 32px 40px;
-        justify-content: center;
-    }
-    .as-right::before { display: none; }
-    .as-card-stack { height: 280px; max-width: 100%; }
-    .as-card-inner { padding: 28px 30px; }
-    .as-card-bg-number { font-size: 8rem; }
-}
 
-@media (max-width: 480px) {
-    .as-left { padding: 70px 24px 24px; }
-    .as-right { padding: 16px 24px 32px; }
-    .as-heading { font-size: 3rem; }
+    .as-panel {
+        flex: none !important;
+        height: 80px;
+        transition: height 0.75s cubic-bezier(0.22,1,0.36,1), border-top-color 0.4s ease;
+    }
+
+    .as-panel.is-active {
+        height: 480px;
+    }
+
+    .as-panel-vert-label { display: none; }
+
+    .as-panel-collapsed {
+        padding: 20px 24px;
+        display: flex !important;
+        align-items: center;
+        gap: 16px;
+    }
+    .as-panel-line { display: none; }
+    .as-panel-title-small { margin: 0; font-size: 1.4rem; }
+    .as-panel-num { margin-bottom: 0; }
+
+    .as-exp-right { display: none; }
+    .as-exp-left { padding: 28px 28px; }
 }
 </style>
 
 <script>
 (function () {
-    const spacer  = document.getElementById('about-scroll-spacer');
-    const cards   = [
-        document.getElementById('as-card-1'),
-        document.getElementById('as-card-2'),
-        document.getElementById('as-card-3'),
-    ];
-    const dots = document.querySelectorAll('.as-progress-dot');
+    const panels = document.querySelectorAll('.as-panel');
 
-    let currentCard = 0;
+    function expandPanel(index) {
+        panels.forEach((p, i) => p.classList.toggle('is-active', i === index));
+    }
 
-    function setCard(index) {
-        if (index === currentCard) return;
+    function collapseAll() {
+        panels.forEach(p => p.classList.remove('is-active'));
+    }
 
-        // Exit current
-        cards[currentCard].classList.remove('is-active');
-        cards[currentCard].classList.add('is-exited');
-
-        currentCard = index;
-
-        // Re-stack the behind cards with diagonal offset
-        cards.forEach((card, i) => {
-            if (i === currentCard) return;
-            card.classList.remove('is-exited', 'is-active');
-
-            const behind = (i - currentCard + cards.length) % cards.length;
-            if (behind === 1) {
-                card.style.transform = 'translate(18px, 18px)';
-                card.style.opacity   = '1';
-                card.style.zIndex    = '2';
-                card.style.borderTopColor = 'rgba(225,6,0,0)';
-            } else {
-                card.style.transform = 'translate(36px, 36px)';
-                card.style.opacity   = '1';
-                card.style.zIndex    = '1';
-                card.style.borderTopColor = 'rgba(225,6,0,0)';
-            }
+    panels.forEach((panel, i) => {
+        // Click on collapsed panel or Read More button
+        panel.addEventListener('click', function (e) {
+            if (this.classList.contains('is-active')) return;
+            expandPanel(i);
         });
 
-        // Bring new card to front
-        cards[currentCard].style.transform = '';
-        cards[currentCard].style.opacity   = '';
-        cards[currentCard].style.zIndex    = '';
-        cards[currentCard].classList.add('is-active');
-
-        // Dots
-        dots.forEach((d, i) => d.classList.toggle('active', i === currentCard));
-    }
-
-    function onScroll() {
-        if (!spacer) return;
-
-        const rect     = spacer.getBoundingClientRect();
-        const total    = spacer.offsetHeight - window.innerHeight;
-        const scrolled = -rect.top;                      // px scrolled into section
-        const progress = Math.max(0, Math.min(1, scrolled / total));
-
-        // 3 cards → split progress into 3 equal bands
-        const band = 1 / 3;
-        let idx = Math.floor(progress / band);
-        if (idx >= cards.length) idx = cards.length - 1;
-
-        setCard(idx);
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll(); // init on load
+        // Close button
+        const closeBtn = panel.querySelector('.as-close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                collapseAll();
+            });
+        }
+    });
 })();
 </script>

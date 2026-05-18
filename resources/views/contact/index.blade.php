@@ -548,9 +548,8 @@ body { background: #080808; }
         <div class="contact-info__block">
             <h3>Follow the Race</h3>
             <div class="contact-socials">
-                <a href="#" class="contact-social-link">Instagram</a>
-                <a href="#" class="contact-social-link">Twitter / X</a>
-                <a href="#" class="contact-social-link">YouTube</a>
+                <a href="https://www.instagram.com/f1/" class="contact-social-link">Instagram</a>
+                <a href="https://www.youtube.com/@Formula1" class="contact-social-link">YouTube</a>
             </div>
         </div>
 

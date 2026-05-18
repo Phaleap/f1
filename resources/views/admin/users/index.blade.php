@@ -1,16 +1,16 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Users')
-@section('page-title', 'Users')
+@section('title', 'Customers')
+@section('page-title', 'Customers')
 @section('breadcrumb')
-    <span>›</span> <span>Users</span>
+    <span>›</span> <span>Customers</span>
 @endsection
 
 @section('content')
 
 <div class="page-header">
     <div>
-        <div class="page-title">Users</div>
+        <div class="page-title">Customers</div>
         <div class="page-sub">Manage registered customers</div>
     </div>
 </div>
@@ -42,7 +42,7 @@
 {{-- Table --}}
 <div class="card">
     <div class="card-header">
-        <span class="card-title">All Users</span>
+        <span class="card-title">All Customers</span>
         <span style="font-size:0.78rem; color:var(--gray-400);">{{ $users->total() }} total</span>
     </div>
     <div class="table-wrap">
